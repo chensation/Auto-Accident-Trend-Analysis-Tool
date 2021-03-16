@@ -1,12 +1,17 @@
+CREATE TABLE State
+(
+    Name VARCHAR(20) NOT NULL,
+    PRIMARY KEY(Name)
+);
+
 CREATE TABLE Population
 (
   Year INT NOT NULL,
-  State VARCHAR(20) NOT NULL,
+  State_Name VARCHAR(20) NOT NULL,
   Population_count INT,
-  PRIMARY KEY (Year, State)
+  PRIMARY KEY (Year, State_Name),
+  FOREIGN KEY (State_Name) REFERENCES State(Name)
 );
-
-select * from Population;
 
 CREATE TABLE weather
 (
@@ -21,31 +26,16 @@ CREATE TABLE weather
   PRIMARY KEY (Weather_ID)
 );
 
-select * from weather;
 
 CREATE TABLE Location
 (
   Latitude DECIMAL(8,6) NOT NULL,
   Longitude DECIMAL(8,6) NOT NULL,
-  State VARCHAR(20),
-  PRIMARY KEY (Longitude, Latitude)
+  State_Name VARCHAR(20) NOT NULL,
+  PRIMARY KEY (Longitude, Latitude),
+  FOREIGN KEY (State_Name) REFERENCES State(Name)
 );
 
-select * from Location;
-
-CREATE TABLE Population_to_Location
-(
-  PtoL_ID INT NOT NULL,
-  Latitude DECIMAL(8,6) NOT NULL,
-  Longitude DECIMAL(8,6)  NOT NULL,
-  Year INT NOT NULL,
-  State VARCHAR(20) NOT NULL,
-  PRIMARY KEY (PtoL_ID),
-  FOREIGN KEY (Latitude, Longitude) REFERENCES Location(Latitude, Longitude),
-  FOREIGN KEY (Year, State) REFERENCES Population(Year, State)
-);
-
-select * from Population_to_Location;
 
 CREATE TABLE Accident
 (
@@ -59,7 +49,6 @@ CREATE TABLE Accident
   Longitude DECIMAL(8,6) NOT NULL,
   PRIMARY KEY (Accident_ID),
   FOREIGN KEY(Weather_ID) REFERENCES Weather(Weather_ID),
- FOREIGN KEY(Longitude, Latitude) REFERENCES Location(Longitude, Latitude)
+  FOREIGN KEY(Longitude, Latitude) REFERENCES Location(Longitude, Latitude)
 );
 
-select * from Accident;
