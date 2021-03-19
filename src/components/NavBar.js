@@ -93,19 +93,15 @@ export default function NavTabs() {
         <States></States>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Page Two
         <Climate></Climate>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Page Three
         <HoursSeasons></HoursSeasons>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Page Four
         <Covid></Covid>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Page Five
         <Severity></Severity>
       </TabPanel>
     </div>
