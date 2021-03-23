@@ -1,39 +1,40 @@
 CREATE TABLE State
 (
     Name VARCHAR(20) NOT NULL,
-    PRIMARY KEY(Name)
+    Code VARCHAR(2) NOT NULL,
+    PRIMARY KEY(Code)
 );
 
 CREATE TABLE Population
 (
   Year INT NOT NULL,
-  State_Name VARCHAR(20) NOT NULL,
+  State_Code VARCHAR(2) NOT NULL,
   Population_count INT,
   PRIMARY KEY (Year, State_Name),
-  FOREIGN KEY (State_Name) REFERENCES State(Name)
+  FOREIGN KEY (State_Code) REFERENCES State(Code)
 );
 
-CREATE TABLE weather
+CREATE TABLE Weather
 (
   Weather_ID INT NOT NULL,
-  Precipitation DECIMAL(3, 2),
-  Humidity DECIMAL(5, 2),
-  Wind_Chill DECIMAL(5, 2),
-  Temperature DECIMAL(5, 2),
-  Pressure DECIMAL(4, 2),
-  Visibility DECIMAL(4, 2),
-  Wind_Speed  DECIMAL(4, 2),
+  Precipitation NUMBER,
+  Humidity NUMBER,
+  Wind_Chill NUMBER,
+  Temperature NUMBER,
+  Pressure NUMBER,
+  Visibility NUMBER,
+  Wind_Speed  NUMBER,
   PRIMARY KEY (Weather_ID)
 );
 
 
 CREATE TABLE Location
 (
-  Latitude DECIMAL(8,6) NOT NULL,
-  Longitude DECIMAL(8,6) NOT NULL,
-  State_Name VARCHAR(20) NOT NULL,
+  Latitude NUMBER NOT NULL,
+  Longitude NUMBER NOT NULL,
+  State_Code VARCHAR(2) NOT NULL,
   PRIMARY KEY (Longitude, Latitude),
-  FOREIGN KEY (State_Name) REFERENCES State(Name)
+  FOREIGN KEY (State_Code) REFERENCES State(Code)
 );
 
 
@@ -43,10 +44,10 @@ CREATE TABLE Accident
   End_Time TIMESTAMP,
   Start_Time TIMESTAMP,
   Severity INT,
-  Affected_Distance DECIMAL(3, 2),
+  Affected_Distance NUMBER,
   Weather_ID INT,
-  Latitude DECIMAL(8,6) NOT NULL,
-  Longitude DECIMAL(8,6) NOT NULL,
+  Latitude NUMBER NOT NULL,
+  Longitude NUMBER NOT NULL,
   PRIMARY KEY (Accident_ID),
   FOREIGN KEY(Weather_ID) REFERENCES Weather(Weather_ID),
   FOREIGN KEY(Longitude, Latitude) REFERENCES Location(Longitude, Latitude)
