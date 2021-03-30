@@ -89,7 +89,6 @@ export default function NavTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Page One
         <States></States>
       </TabPanel>
       <TabPanel value={value} index={1}>
