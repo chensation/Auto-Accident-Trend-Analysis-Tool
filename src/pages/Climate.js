@@ -7,37 +7,46 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { Line } from 'react-chartjs-2';
 
 function Climate() {
+
+  let region1Data = [5,10,15,20,25,30,35,40,9,8,45,100];
+  let region2Data = [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3];
+  let region3Data = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
+  let region4Data = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
+  let region5Data = [1, 90, 39, 58, 28, 38, 128, 189, 38, 58, 28, 38];
+
+  let regionsData = [region1Data, region2Data, region3Data, region4Data, region5Data];
+
   let region1 = {
     label: 'Region 1',
-    data: [5,10,15,20,25,30,35,40,9,8,45,100],
+    data: region1Data,
     fill: false,
     backgroundColor: 'rgb(255, 0, 0)',
     borderColor: 'rgba(255, 0, 0, 0.2)',
   };
   let region2 ={
     label: 'Region 2',
-    data: [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3],
+    data: region2Data,
     fill: false,
     backgroundColor: 'rgb(255, 127, 0)',
     borderColor: 'rgba(255, 127, 0, 0.2)',
   };
   let region3 = {
     label: 'Region 3',
-    data: [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3],
+    data: region3Data,
     fill: false,
     backgroundColor: 'rgb(255, 214, 0)',
     borderColor: 'rgba(212, 175, 0, 0.2)',
   };
   let region4 = {
     label: 'Region 4',
-    data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
+    data: region4Data,
     fill: false,
     backgroundColor: 'rgb(0, 255, 0)',
     borderColor: 'rgba(0, 255, 0, 0.2)',
   };
   let region5 = {
     label: 'Region 5',
-    data: [1, 90, 39, 58, 28, 38, 128, 189, 38, 58, 28, 38],
+    data: region5Data,
     fill: false,
     backgroundColor: 'rgb(0, 0, 255)',
     borderColor: 'rgba(0, 0, 255, 0.2)',
@@ -72,50 +81,37 @@ function Climate() {
     },
   }
 
-  const [state, setState] = useState({
-    checked1: true,
-    checked2: true,
-    checked3: true,
-    checked4: true,
-    checked5: true,
-  });
+  const [checkboxes, setCheckboxes] = useState([
+    { name: 'Region 1',
+      checked: true
+    },
+    { name: 'Region 2',
+      checked: true
+    },
+    { name: 'Region 3',
+      checked: true
+    },
+    { name: 'Region 4',
+      checked: true
+    },
+    { name: 'Region 5',
+      checked: true
+    },
+  ]);
 
-  function checkDisplayedRegions(){
-    if(state.checked1 === true){
-      displayedRegions[0] = region1;
-    }
-    else{
-      displayedRegions[0]={};
-    }
-    if(state.checked2 === true){
-      displayedRegions[1] = region2;
-    }
-    else{
-      displayedRegions[1]={};
-    }
-    if(state.checked3 === true){
-      displayedRegions[2] = region3;
-    }
-    else{
-      displayedRegions[2] = {};
-    }
-    if(state.checked4 === true){
-      displayedRegions[3] = region4;
-    }
-    else{
-      displayedRegions[3] = {};
-    }
-    if(state.checked5 === true){
-      displayedRegions[4] = region5;
-    }
-    else{
-      displayedRegions[4] = {};
-    }
+  function updateGraph(regions){
+    regions.forEach((region, index) => {
+      displayedRegions[index]['data'] = region['checked'] ? regionsData[index] : [];
+    });
   }
 
-  function displayRegions(event) {
-    setState({ ...state, [event.target.name]: event.target.checked });
-    checkDisplayedRegions();
+  function handleRegionChange(event) {
+    let temp = checkboxes;
+    temp[parseInt(event.target.name)]['checked'] = event.target.checked;
+    //let temp = { ...checkboxes, [event.target.name]: event.target.checked };
+    setCheckboxes(temp);
+    updateGraph(temp);
+    
     setData({
       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       datasets: displayedRegions,
@@ -138,11 +134,10 @@ function Climate() {
       alignItems="center"
     >
     <FormGroup>
-    <FormControlLabel control={<Checkbox checked={state.checked1} onChange={displayRegions} name="checked1" color="primary"/>} label='Region 1'/>
-    <FormControlLabel control={<Checkbox checked={state.checked2} onChange={displayRegions} name="checked2" color="primary"/>} label='Region 2'/>
-    <FormControlLabel control={<Checkbox checked={state.checked3} onChange={displayRegions} name="checked3" color="primary"/>} label='Region 3'/>
-    <FormControlLabel control={<Checkbox checked={state.checked4} onChange={displayRegions} name="checked4" color="primary"/>} label='Region 4'/>
-    <FormControlLabel control={<Checkbox checked={state.checked5} onChange={displayRegions} name="checked5" color="primary"/>} label='Region 5'/>
+    {checkboxes.map((checkbox, index)=>
+
+      <FormControlLabel key={index} control={<Checkbox checked={checkbox.checked} onChange={handleRegionChange} name={index.toString()} color="primary"/>} label={checkbox.name}/>
+    )}
     </FormGroup>
     </Grid>
     </Grid>
