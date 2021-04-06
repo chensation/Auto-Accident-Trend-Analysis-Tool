@@ -22,6 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-dbconfig.js
 instantclient_19_10/
 node_modules/
+dbconfig.js
+
+
+
+
