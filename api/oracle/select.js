@@ -56,9 +56,19 @@ async function run() {
 	connection = await oracledb.getConnection(dbConfig);
 
 	try {
-	  	const query = 
-	  		`SELECT COUNT(*)
-	  		FROM SIYUCHEN.LOCATION`;
+		var year = 2019;
+	  	var query = 
+	  		`SELECT COUNT(*),STATE_CODE,P,(COUNT(*)/P)*1000 AS ACCIDENT_PER_THOUSAND_POP
+			from 
+			SIYUCHEN.ACCIDENT NATURAL JOIN SIYUCHEN.LOCATION NATURAL JOIN 
+		    (SELECT POPULATION_COUNT AS P,STATE_CODE
+		     FROM SIYUCHEN.POPULATION
+		     WHERE YEAR = 2010
+		    )
+			GROUP BY STATE_CODE,P
+			ORDER BY  ACCIDENT_PER_THOUSAND_POP DESC`;
+		query = query.replace("2010", year);
+		console.log(query)
 
 	  	const result = await connection.execute(
 	  		query,
