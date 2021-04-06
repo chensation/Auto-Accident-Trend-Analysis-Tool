@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -79,8 +78,6 @@ function Climate() {
   });
 
   const options = {
-    responsive: true,
-    maintainAspectRatio: false,
 
     title: {
       display: true,
@@ -157,35 +154,25 @@ function Climate() {
     regionsData.length ?
     // or regionsData[0].length depending on implementation
 
-    <Grid
-      container
-      direction='row'
-      justify='center'
-      alignItems="center"
-    >
-      <Grid item>
-        <Grid
-          container
-          direction='column'
-          justify='center'
-          alignItems="center"
-        >
+    <div>
+
+      <h1>What Are The Effects Of Climate On Auto Accidents?</h1>
+    
+      <Grid container direction='row' justify='center' alignItems="center">
+        <Grid item>
           <FormGroup>
             {checkboxes.map((checkbox, index)=>
-
               <FormControlLabel key={index} control={<Checkbox checked={checkbox.checked} onChange={handleRegionChange} name={index.toString()} color="primary"/>} label={checkbox.name}/>
             )}
-          </FormGroup>
+          </FormGroup> 
         </Grid>
-      </Grid>
-      <Grid item>
-        <Container>
-          <Line data={data} options={options} width={1200} height={700}/>
-        </Container>
-      </Grid>
-      
-    </Grid>
 
+        <Grid item xs={6}>
+            <Line data={data} options={options}/>
+        </Grid>
+        
+      </Grid>
+    </div>
     : <div></div>
   );
 }

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -222,37 +221,29 @@ function HoursSeasons() {
     durationData.length ?
     // or durationData[0].length depending on implementation
 
-    <Grid
-      container
-      direction='row'
-      justify='center'
-      alignItems="stretch"
-    >
-      
-      <Grid item>
-        <Grid
-          container
-          direction='column'
-        >
-          <FormGroup>
-            {checkboxes.map((checkbox, index)=>
+    <Grid container direction='column' justify='center' alignItems="center">
 
+      <Grid item xs={12}>
+        <h1>How Does Time of Day Affect Auto Accident Delay In Different Seasons?</h1>
+      </Grid>
+
+      <Grid item xs={12}>
+          <FormGroup row={true}>
+            {checkboxes.map((checkbox, index)=>
               <FormControlLabel key={index} control={<Checkbox checked={checkbox.checked} onChange={handleSeasonChange} name={index.toString()} color="primary"/>} label={checkbox.name}/>
             )}
         </FormGroup>
+      </Grid>
+
+      <Grid container direction='row' justify='center'>
+        <Grid item xs={6}>
+          <Line data={durationGraphData} options={durationOptions}/>
+        </Grid>
+        <Grid item xs={6}>
+          <Line data={distGraphData} options={distOptions}/>
         </Grid>
       </Grid>
-    
-    
-      <Container>
-        <Line data={durationGraphData} options={durationOptions}/>
-      </Container>
-      
 
-      <Container>
-        <Line data={distGraphData} options={distOptions}/>
-      </Container>
-    
     </Grid>
             
     : <div></div>
