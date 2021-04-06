@@ -31,75 +31,55 @@
 
 'use strict';
 
+/*
+Make a table matching number to sql query
+Make a function that calls an sql query given number and array optional variables
+Make a function that edits sql queries based on the variables (or you would need multiple versions of sql queries)
+Make a default value dictionary
+Write function to convert the returned values to the desired format based on
+*/
+
 const oracledb = require('oracledb');
-	try {
-		oracledb.initOracleClient({libDir: './instantclient_19_10'});
-		console.log("Oracle initialized...")
-	} catch (err) {
+const dbConfig = require('./dbconfig.js');
+
+try {
+	oracledb.initOracleClient({libDir: './instantclient_19_10'});
+	console.log("Oracle initialized...")
+} catch (err) {
 	console.error('Whoops!');
 	console.error(err);
 	process.exit(1);
 }
 
-const dbConfig = require('./dbconfig.js');
-
 async function run() {
 	let connection;
+	connection = await oracledb.getConnection(dbConfig);
 
 	try {
-		connection = await oracledb.getConnection(
-		    {
-		      user : dbConfig.user,
-		      password : dbConfig.password,
-		      connectString : dbConfig.connectString
-		    }
-		 if (err) {
-		 	console.err(err.message);
-		 	return;
-		 } else {
-		 	console.log("connected to Oracle...")
-		 });
-	}
+	  	const query = 
+	  		`SELECT COUNT(*)
+	  		FROM SIYUCHEN.LOCATION`;
 
-
-	    function(err, connection)
-	    {
-			if (err) {
-				console.err(err.message);
-				return;
-	      	}
-	      	else {
-	      		console.log("connected to Oracle...")
-	      	}
-
-	      	try {
-		      	const query = 
-		      		`SELECT COUNT(*), STATE_CODE, P,(COUNT(*)/P)*1000 AS ACCIDENT_PER_THOUSAND_POP 
-					 FROM SIYUCHEN.ACCIDENT NATURAL JOIN SIYUCHEN.LOCATION NATURAL JOIN ( 
-							SELECT POPULATION_COUNT AS P,STATE_CODE 
-						     FROM SIYUCHEN.POPULATION 
-						     WHERE YEAR = 2020 
-					)
-					GROUP BY STATE_CODE, P 
-					ORDER BY ACCIDENT_PER_THOUSAND_POP DESC;`;
-
-		      	let result = await connection.execute(query);
-	  			console.log(result.metaData);
-		      	console.log(result.rows);
-
-		    } catch(err) {
-		    	console.log(error);
-		    } finally {
-		    	if (connection) {
-		    		try {
-		    			await connection.close();
-		    		} catch (err) {
-		    			console.log(err);
-		    		}
-		    	}
-		    }
-	    }
-	);
+	  	const result = await connection.execute(
+	  		query,
+	  		[],
+	  		{
+	  			outFormat: oracledb.OUT_FORMAT_OBJECT,
+	  		}
+	  	);
+		console.log(result.metaData);
+	  	console.log(result.rows);
+	} catch(err) {
+    	console.log(err);
+	} finally {
+    	if (connection) {
+    		try {
+    			await connection.close();
+    		} catch (err) {
+    			console.log(err);
+    		}
+    	}
+    }
 }
 
 run();
