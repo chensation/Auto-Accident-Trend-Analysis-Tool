@@ -19,6 +19,14 @@ SELECT COUNT(*)  FROM SIYUCHEN.ACCIDENT
 
 
 
+SELECT  AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
+        TO_CHAR(START_TIME, 'MM') AS H FROM  
+                (   
+                SELECT *  FROM SIYUCHEN.ACCIDENT 
+                WHERE (LATITUDE>45 AND LATITUDE <50) 
+                ) -- WINTER
+    GROUP BY TO_CHAR(START_TIME, 'MM')
+    ORDER BY AVG((sysdate + (end_time - start_time)*24*60- sysdate)) ASC
 --query 3 
 
 --DISTANCE
