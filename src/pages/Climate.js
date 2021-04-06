@@ -108,7 +108,6 @@ function Climate() {
   function handleRegionChange(event) {
     let temp = checkboxes;
     temp[parseInt(event.target.name)]['checked'] = event.target.checked;
-    //let temp = { ...checkboxes, [event.target.name]: event.target.checked };
     setCheckboxes(temp);
     updateGraph(temp);
     
@@ -126,24 +125,24 @@ function Climate() {
       justify='center'
       alignItems="center"
     >
-    <Grid item>
-    <Grid
-      container
-      direction='column'
-      justify='center'
-      alignItems="center"
-    >
-    <FormGroup>
-    {checkboxes.map((checkbox, index)=>
+      <Grid item>
+        <Grid
+          container
+          direction='column'
+          justify='center'
+          alignItems="center"
+        >
+        <FormGroup>
+          {checkboxes.map((checkbox, index)=>
 
-      <FormControlLabel key={index} control={<Checkbox checked={checkbox.checked} onChange={handleRegionChange} name={index.toString()} color="primary"/>} label={checkbox.name}/>
-    )}
-    </FormGroup>
-    </Grid>
-    </Grid>
-    <Container fixed >
-    <Line data={data} options={options}/>
-    </Container>
+            <FormControlLabel key={index} control={<Checkbox checked={checkbox.checked} onChange={handleRegionChange} name={index.toString()} color="primary"/>} label={checkbox.name}/>
+          )}
+        </FormGroup>
+        </Grid>
+      </Grid>
+      <Container fixed >
+        <Line data={data} options={options}/>
+      </Container>
     </Grid>
   );
 }
