@@ -1,16 +1,12 @@
-import React, {useEffect} from "react";
-import h337 from "heatmap.js";
+import React, {useState} from "react";
+import Container from '@material-ui/core/Container';
 import Switch from '@material-ui/core/Switch';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import USAMap from "react-usa-map";
 import Slider from '@material-ui/core/Slider';
+import statesfile from '../components/states.json'
 
-function States() {
+function States() {  
   
-  function mapHandler(event){
-    alert(event.target.dataset.name);
-  };
-
   const PrettoSlider = withStyles({
     root: {
       color: '#52af77',
@@ -40,12 +36,40 @@ function States() {
       borderRadius: 4,
     },
   })(Slider);
-  
+
+  const [statesData, setStatesData] = useState(statesfile);
+
+  let stateColor = 'green';
+
+  const handleTimeLineChange = (value) => {
+    
+  }
   
   return (
     <div>
       <Switch></Switch>
-      <USAMap onClick={mapHandler}/>
+      <Container>
+      <svg viewBox="0 0 960 600">
+        {statesData.map((stateData, index) =>
+          <path
+            className="someCSSClass"
+            style={{cursor: "pointer", fill: stateColor}}
+            key={index}
+            stroke="#fff"
+            strokeWidth="6px"
+            d={stateData.shape}
+            onMouseOver={(event) => {
+              event.target.style.fill = 'red';
+              //console.log(statesData[index].id);
+            }}
+            onMouseOut={(event) => {
+              event.target.style.fill = 'orange';
+            }}
+          >
+          </path>
+        )}
+      </svg>
+      </Container>
       <div>
       <PrettoSlider 
         valueLabelDisplay="auto"  
@@ -54,6 +78,7 @@ function States() {
         step={1}
         max={2020} 
         defaultValue ={2016}
+        onChange={handleTimeLineChange}
       />
       </div>
     </div>
