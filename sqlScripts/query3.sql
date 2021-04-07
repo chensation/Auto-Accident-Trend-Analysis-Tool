@@ -1,32 +1,3 @@
-
-
-
---QUERY2
-SELECT COUNT(*)  FROM SIYUCHEN.ACCIDENT 
-            WHERE TO_CHAR(START_TIME, 'MM')=01
-            AND (LATITUDE>45 AND LATITUDE <50)  
-            --variables: latitude, Month
-
-
-/*
-SELECT COUNT(*)  FROM SIYUCHEN.ACCIDENT 
-            WHERE TO_CHAR(START_TIME, 'MM')= (INPUT.MONTH)
-            AND (LATITUDE>(START_LAT) AND LATITUDE <(END_LAT)  )
-            --variables: latitude, Month
-
-
-*/
-
-
-
-SELECT  AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
-        TO_CHAR(START_TIME, 'MM') AS H FROM  
-                (   
-                SELECT *  FROM SIYUCHEN.ACCIDENT 
-                WHERE (LATITUDE>45 AND LATITUDE <50) 
-                ) -- WINTER
-    GROUP BY TO_CHAR(START_TIME, 'MM')
-    ORDER BY AVG((sysdate + (end_time - start_time)*24*60- sysdate)) ASC
 --query 3 
 
 --DISTANCE
@@ -40,7 +11,7 @@ SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS,
                 OR   TO_CHAR(START_TIME, 'MM')<03
                 ) 
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
 
 --SPRING
 SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS, 
@@ -51,7 +22,7 @@ SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS,
                 AND  TO_CHAR(START_TIME, 'MM')<06
                 ) 
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
 
 --SUMMER 
 SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS, 
@@ -62,7 +33,7 @@ SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS,
                 AND   TO_CHAR(START_TIME, 'MM')<09
                 ) 
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
 --FALL
 SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS,
         TO_CHAR(START_TIME, 'HH24') AS H FROM  
@@ -72,7 +43,7 @@ SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS,
                 OR   TO_CHAR(START_TIME, 'MM')<12
                 ) 
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
 
 
 --DURATION
@@ -84,7 +55,7 @@ SELECT  AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE,
                 OR   TO_CHAR(START_TIME, 'MM')<03
                 ) -- WINTER
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
 
 
 SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
@@ -95,7 +66,7 @@ SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE,
                 AND   TO_CHAR(START_TIME, 'MM')<6
                 ) -- SPRING
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
     
 SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
         TO_CHAR(START_TIME, 'HH24') AS H FROM  
@@ -105,7 +76,7 @@ SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE,
                 AND   TO_CHAR(START_TIME, 'MM')<9
                 ) -- SUMMER
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
     
     
 SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
@@ -116,5 +87,5 @@ SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE,
                 AND   TO_CHAR(START_TIME, 'MM')<12
                 ) -- FALL
     GROUP BY TO_CHAR(START_TIME, 'HH24')
-    ORDER BY TO_CHAR(START_TIME, 'HH24') DESC 
+    ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
     

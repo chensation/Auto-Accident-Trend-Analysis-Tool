@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import Container from '@material-ui/core/Container';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -8,25 +7,46 @@ import { Line } from 'react-chartjs-2';
 
 function HoursSeasons() {
 
+  const seasonLabels = ['Winter', 'Spring', 'Summer', 'Fall'];
+  const graphLabels = ['12am', '1am', '2am', '3am', '4am', '5am', '6am','7am', '8am', '9am', '10am', '11am', '12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
+
   let winterData = [5,10,15,20,25,30,35,40,9,8,45,100,5,10,15,20,25,30,35,40,9,8,45,100];
   let springData = [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3];
   let summerData = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3,112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
   let fallData = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
 
-  let durationData = [winterData, springData, summerData, fallData];
-  let countData = [winterData, springData, summerData, fallData];
+  useEffect(()=>{
 
-  let xlabel = ['12am', '1am', '2am', '3am', '4am', '5am', '6am','7am', '8am', '9am', '10am', '11am', '12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
+    const fetchData = async ()=> {
+
+      /*place function here
+      winterDurationData = durationFunction(winter) etc
+      winterDistData = distFunction(winter) etc
+      or
+      durationData[i] = durationFunction(i) etc
+
+      */
+    }
+
+    fetchData()
+
+  }, []);
+
+
+  let durationData = [winterData, springData, summerData, fallData];
+  let distData = [winterData, springData, summerData, fallData];
+
+  
 
   let winterDuration = {
-    label: 'Winter',
+    label: seasonLabels[0],
     data: winterData,
     fill: false,
     backgroundColor: 'rgb(255, 0, 0)',
     borderColor: 'rgba(255, 0, 0, 0.2)',
   };
-  let winterCount = {
-    label: 'Winter',
+  let winterDist = {
+    label: seasonLabels[0],
     data: winterData,
     fill: false,
     backgroundColor: 'rgb(255, 0, 0)',
@@ -34,14 +54,14 @@ function HoursSeasons() {
   }; 
 
   let springDuration ={
-    label: 'Spring',
+    label: seasonLabels[1],
     data: springData,
     fill: false,
     backgroundColor: 'rgb(255, 127, 0)',
     borderColor: 'rgba(255, 127, 0, 0.2)',
   };
-  let springCount ={
-    label: 'Spring',
+  let springDist ={
+    label: seasonLabels[1],
     data: springData,
     fill: false,
     backgroundColor: 'rgb(255, 127, 0)',
@@ -49,14 +69,14 @@ function HoursSeasons() {
   };
 
   let summerDuration = {
-    label: 'Summer',
+    label: seasonLabels[2],
     data: summerData,
     fill: false,
     backgroundColor: 'rgb(255, 214, 0)',
     borderColor: 'rgba(212, 175, 0, 0.2)',
   };
-  let summerCount = {
-    label: 'Summer',
+  let summerDist = {
+    label: seasonLabels[2],
     data: summerData,
     fill: false,
     backgroundColor: 'rgb(255, 214, 0)',
@@ -64,14 +84,14 @@ function HoursSeasons() {
   };
 
   let fallDuration = {
-    label: 'Fall',
+    label: seasonLabels[3],
     data: fallData,
     fill: false,
     backgroundColor: 'rgb(0, 255, 0)',
     borderColor: 'rgba(0, 255, 0, 0.2)',
   };
-  let fallCount = {
-    label: 'Fall',
+  let fallDist = {
+    label: seasonLabels[3],
     data: fallData,
     fill: false,
     backgroundColor: 'rgb(0, 255, 0)',
@@ -79,22 +99,31 @@ function HoursSeasons() {
   };
   
   let displayedSeasonsDuration =[winterDuration,springDuration,summerDuration,fallDuration];
-  let displayedSeasonsCount =[winterCount,springCount,summerCount,fallCount];
+  let displayedSeasonsDist =[winterDist,springDist,summerDist,fallDist];
 
   const durationOptions = {
     title: {
       display: true,
-      text: 'Accident Duration'
+      text: 'Accident Duration By Seasons'
     },
-
-    scaleLabel:{
-      display:true,
-      labelString: 'Accident Count'
+    legend: {
+      onClick: () => {}
     },
-    
     scales: {
+      xAxes: [
+        {
+          scaleLabel:{
+            display:true,
+            labelString: 'Hour Of Day'
+          },
+        },
+      ],
       yAxes: [
         {
+          scaleLabel:{
+            display:true,
+            labelString: 'Accident Duration (Min)'
+          },
           ticks: {
             beginAtZero: true,
           },
@@ -103,20 +132,29 @@ function HoursSeasons() {
     },
   }
 
-  const countOptions = {
+  const distOptions = {
     title: {
       display: true,
-      text: 'Accident Distance'
+      text: 'Affected Distance By Seasons'
     },
-
-    scaleLabel:{
-      display:true,
-      labelString: 'Accident Count'
+    legend: {
+      onClick: () => {}
     },
-    
     scales: {
+      xAxes: [
+        {
+          scaleLabel:{
+            display:true,
+            labelString: 'Hour Of Day'
+          },
+        },
+      ],
       yAxes: [
         {
+          scaleLabel:{
+            display:true,
+            labelString: 'Affected Distance (Mi)'
+          },
           ticks: {
             beginAtZero: true,
           },
@@ -126,26 +164,26 @@ function HoursSeasons() {
   }
 
   const [durationGraphData, setDurationGraphData] = useState({
-    labels:  xlabel,
+    labels:  graphLabels,
     datasets: displayedSeasonsDuration,
   });
 
-  const [countGraphData, setCountGraphData]=useState({
-    labels: xlabel,
-    datasets: displayedSeasonsCount,
+  const [distGraphData, setDistGraphData]=useState({
+    labels: graphLabels,
+    datasets: displayedSeasonsDist,
   });
 
   const [checkboxes, setCheckboxes] = useState([
-    { name: 'Winter',
+    { name: seasonLabels[0],
       checked: true
     },
-    { name: 'Spring',
+    { name: seasonLabels[1],
       checked: true
     },
-    { name: 'Summer',
+    { name: seasonLabels[2],
       checked: true
     },
-    { name: 'Fall',
+    { name: seasonLabels[3],
       checked: true
     }
   ]);
@@ -155,7 +193,7 @@ function HoursSeasons() {
   function updateGraphs(seasons){
     seasons.forEach((season, index) => {
       displayedSeasonsDuration[index]['data'] = season['checked'] ? durationData[index] : [];
-      displayedSeasonsCount[index]['data'] = season['checked'] ? countData[index] : [];
+      displayedSeasonsDist[index]['data'] = season['checked'] ? distData[index] : [];
     });
   }
 
@@ -166,50 +204,49 @@ function HoursSeasons() {
     updateGraphs(temp);
     
     setDurationGraphData({
-      labels: xlabel,
+      labels: graphLabels,
       datasets: displayedSeasonsDuration,
     });
 
-    setCountGraphData({
-      labels: xlabel,
-      datasets: displayedSeasonsCount,
+    setDistGraphData({
+      labels: graphLabels,
+      datasets: displayedSeasonsDist,
     });
     
   }
   
   
   return (
-    <Grid
-      container
-      direction='row'
-      justify='center'
-      alignItems="stretch"
-    >
-      <Grid item>
-        <Grid
-          container
-          direction='column'
-        >
-          <FormGroup>
-            {checkboxes.map((checkbox, index)=>
+    //check if useeffect has passed
+    durationData.length ?
+    // or durationData[0].length depending on implementation
 
+    <Grid container direction='column' justify='center' alignItems="center">
+
+      <Grid item xs={12}>
+        <h1>How Does Time of Day Affect Auto Accident Delay In Different Seasons?</h1>
+      </Grid>
+
+      <Grid item xs={12}>
+          <FormGroup row={true}>
+            {checkboxes.map((checkbox, index)=>
               <FormControlLabel key={index} control={<Checkbox checked={checkbox.checked} onChange={handleSeasonChange} name={index.toString()} color="primary"/>} label={checkbox.name}/>
             )}
         </FormGroup>
+      </Grid>
+
+      <Grid container direction='row' justify='center'>
+        <Grid item xs={6}>
+          <Line data={durationGraphData} options={durationOptions}/>
+        </Grid>
+        <Grid item xs={6}>
+          <Line data={distGraphData} options={distOptions}/>
         </Grid>
       </Grid>
-    
-    
-      <Container>
-        <Line data={durationGraphData} options={durationOptions}/>
-      </Container>
-      
 
-      <Container>
-        <Line data={countGraphData} options={countOptions}/>
-      </Container>
-    
     </Grid>
+            
+    : <div></div>
   );
 }
 
