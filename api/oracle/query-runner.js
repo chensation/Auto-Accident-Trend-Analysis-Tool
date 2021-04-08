@@ -3,7 +3,9 @@ const oracledb = require('oracledb');
 const dbConfig = require('./dbconfig.js');
 
 /*
-Write function to convert the returned values to the desired format based on
+	Write function to convert the returned values to the desired format based on, columnwise split
+	Connect frontend with backend (try using no express, then try using express)
+	Write sql query 5
 */
 
 function init() {
