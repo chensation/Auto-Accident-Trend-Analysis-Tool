@@ -16,35 +16,31 @@ function init() {
 	}
 }
 
-async function run() {
+async function run(payload) {
 	let connection = await oracledb.getConnection(dbConfig);
 
 	try {
-	  	var query = `SELECT COUNT(*),TO_CHAR(START_TIME, 'MM') AS MONTH  FROM SIYUCHEN.ACCIDENT 
-           WHERE (LATITUDE>=00 AND LATITUDE < 01)  
-GROUP BY TO_CHAR(START_TIME, 'MM')
-ORDER BY TO_CHAR(START_TIME, 'MM') ASC`
-	  	console.log(query)
-		query = query.replace("2010", year);
+		number = payload["number"]
+		vars = payload["vars"]
+	} catch(err) {
+		console.error("Incorrect payload format.")
+		return null
+	}
 
-	  	const result = await connection.execute(
-	  		query,
-	  		[],
-	  		{
-	  			outFormat: oracledb.OUT_FORMAT_OBJECT,
-	  		}
-	  	);
+	try {
+	  	queries = await parser.processQuery(number, vars)
+	  	var results = []
 
-	  	const result2 = await connection.execute(
-	  		query,
-	  		[],
-	  		{
-	  			outFormat: oracledb.OUT_FORMAT_OBJECT,
-	  		}
-	  	);
-		console.log(result.metaData);
-	  	console.log(result.rows);
-	  	console.log(result2.metaData)
+	  	for (const query of queries) {
+	  		let result = await connection.execute(
+	  			query,
+	  			[],
+	  			{
+	  				outFormat: oracledb.OUT_FORMAT_ARRAY
+	  			}
+	  		)
+	  		results.push(result)
+	  	}
 	} catch(err) {
     	console.log(err);
 	} finally {
@@ -56,7 +52,29 @@ ORDER BY TO_CHAR(START_TIME, 'MM') ASC`
     		}
     	}
     }
+
+    return results
 }
 
-// init();
-// run();
+function cleanData(dirty) {
+	clean = []
+	for (var dirt of dirty) {
+		clean.push(dirt["rows"])
+	}
+
+	return clean
+}
+
+async function main() {
+	const test_payload = {
+		"number": 3,
+		"vars": parser.constSet[3][0]
+	}
+
+	init();
+	var data_meta = await run(test_payload)
+	var data = cleanData(data_meta)
+	console.log(data)
+}
+
+main()

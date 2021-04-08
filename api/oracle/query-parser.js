@@ -1,10 +1,31 @@
 const defaultTable = {
-	1: [["0000"], ["00", "XXXX"]],
+	1: [["0000"], ["00", "XXX"]],
 	2: [["00", "01"]],
-	3: [["00", "01"], ["00", "01"]],
-	4: null,
+	3: [["00", "01", "AND"], ["00", "01", "AND"]],
+	4: [["00-00"], ["00-00"], ["00-00"], ["00-00"]],
 	5: null
 }
+
+const constSet = {
+	1: null, 
+	2: [
+			[["25", "30"]],
+			[["30", "45"]],
+			[["35", "40"]],
+			[["40", "45"]],
+			[["45", "50"]]
+	],
+	3: [
+		[["12", "03", "OR"], ["12", "03", "OR"]],
+		[["03", "06", "AND"], ["03", "06", "AND"]],
+		[["06", "09", "AND"], ["06", "09", "AND"]],
+		[["09", "12", "AND"], ["09", "12", "AND"]]
+	],
+	4: [
+		[["20-03"]]
+	],
+	5: null
+}	
 
 async function processQuery(number, vars = null) {
 	let contents = await getSQLQuery(number).catch((err) => {
@@ -44,13 +65,13 @@ function readContent(number, callback) {
 	})
 
 	var contents = []
-	files.forEach(function (item, index) {
+	for (var i = 0; i < files.length; i++) {
 		try {
-			contents.push(fs.readFileSync(item, 'utf8'))
-		} catch (err) {
+			contents.push(fs.readFileSync(files[i], 'utf8'))
+		} catch(err) {
 			callback(err)
 		}
-	})
+	}
 	callback(null, contents)
 }
 
@@ -84,6 +105,7 @@ function convertQuery(defaultTable, number, queries, vars) {
 
 module.exports = {
 	defaultTable: defaultTable,
+	constSet: constSet,
 	processQuery: processQuery,
 	getSQLQuery: getSQLQuery,
 	readContent: readContent,
