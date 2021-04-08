@@ -38,7 +38,7 @@ SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS,
                 (   
                 SELECT *  FROM SIYUCHEN.ACCIDENT 
                 WHERE TO_CHAR(START_TIME, 'MM')>=09 
-                OR   TO_CHAR(START_TIME, 'MM')<12
+                AND   TO_CHAR(START_TIME, 'MM')<12
                 ) 
     GROUP BY TO_CHAR(START_TIME, 'HH24')
     ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
