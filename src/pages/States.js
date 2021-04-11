@@ -38,11 +38,39 @@ function States() {
   })(Slider);
 
   const [statesData, setStatesData] = useState(statesfile);
-
-  let stateColor = 'green';
-
-  const handleTimeLineChange = (value) => {
+  const[year, setYear] = useState(2016);
+  
+  const handleTimeLineChange = (event, value) => {
     
+    let newArr = [...statesData];
+
+    if(value===2016){
+    newArr.forEach(stateData=>{
+      stateData.color = "red";
+    })}
+
+    if(value===2017){
+      newArr.forEach(stateData=>{
+        stateData.color = "orange";
+    })}
+
+    if(value===2018){
+        newArr.forEach(stateData=>{
+          stateData.color = "green";
+   })}
+
+    if(value===2019){
+        newArr.forEach(stateData=>{
+          stateData.color = "blue";
+    })}
+
+    if(value===2020){
+      newArr.forEach(stateData=>{
+        stateData.color = "blueviolet";
+    })}
+    
+    setYear(value);
+    setStatesData(newArr);
   }
   
   return (
@@ -51,20 +79,12 @@ function States() {
       <Container>
       <svg viewBox="0 0 960 600">
         {statesData.map((stateData, index) =>
-          <path
-            className="someCSSClass"
-            style={{cursor: "pointer", fill: stateColor}}
+          <path 
+            style={{cursor: "pointer", fill:stateData.color}}
             key={index}
             stroke="#fff"
             strokeWidth="6px"
             d={stateData.shape}
-            onMouseOver={(event) => {
-              event.target.style.fill = 'red';
-              //console.log(statesData[index].id);
-            }}
-            onMouseOut={(event) => {
-              event.target.style.fill = 'orange';
-            }}
           >
           </path>
         )}
@@ -72,8 +92,8 @@ function States() {
       </Container>
       <div>
       <PrettoSlider 
-        valueLabelDisplay="auto"  
-        aria-label="pretto slider" 
+        valueLabelDisplay="on"
+        value={year}
         min={2016}
         step={1}
         max={2020} 
