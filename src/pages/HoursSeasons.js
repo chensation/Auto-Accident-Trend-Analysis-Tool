@@ -104,7 +104,7 @@ function HoursSeasons() {
   const durationOptions = {
     title: {
       display: true,
-      text: 'Accident Duration By Seasons'
+      text: 'Average Accident Duration By Seasons'
     },
     legend: {
       onClick: () => {}
@@ -135,7 +135,7 @@ function HoursSeasons() {
   const distOptions = {
     title: {
       display: true,
-      text: 'Affected Distance By Seasons'
+      text: 'Average Affected Distance By Seasons'
     },
     legend: {
       onClick: () => {}
