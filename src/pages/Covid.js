@@ -82,7 +82,7 @@ function Covid() {
   });
 
   const switchData = (event) => {
-    if(event.target.value === "Average Affected Distance Difference (Mi)"){
+    if(event.target.value === "Average Accident Count Difference"){
       graphValues[0].data = distData;
       
     }
@@ -106,12 +106,12 @@ function Covid() {
     durationData.length ?
     
     <div>
-      <h1>How has COVID-19 affected auto accidents?</h1>
+      <h1>How Has COVID-19 Affected Auto Accidents?</h1>
       <Grid container direction='row' justify='center' alignItems="center">
         <Grid item>
           <RadioGroup value={toggle} onChange={switchData}>
             <FormControlLabel value="Average Accident Duration Difference (Min)" control={<Radio />} label="Accident Duration" />
-            <FormControlLabel value="Average Affected Distance Difference (Mi)" control={<Radio />} label="Affected Distance" />
+            <FormControlLabel value="Average Accident Count Difference" control={<Radio />} label="Accident Count" />
           </RadioGroup>
         </Grid>
         <Grid item xs={8}>
