@@ -7,6 +7,36 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { Line } from 'react-chartjs-2';
 
 function Climate() {
+<<<<<<< Updated upstream:src/pages/Climate.js
+=======
+  const regionLabels = ['Latitudes 25°N - 30°N', 'Latitudes 30°N - 35°N', 'Latitudes 35°N - 40°N', 'Latitudes 40°N - 45°N', 'Latitudes 45°N - 50°N'];
+  const graphLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  let region1Data = [5,10,15,20,25,30,35,40,9,8,45,100];
+  let region2Data = [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3];
+  let region3Data = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
+  let region4Data = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
+  let region5Data = [1, 90, 39, 58, 28, 38, 128, 189, 38, 58, 28, 38];
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+
+      /*place function here
+      region1Data = function(region1) etc
+      or
+      regionsData[i] = function(i) etc
+
+      */
+    }
+
+    fetchData()
+  }, []);
+
+
+  let regionsData = [region1Data, region2Data, region3Data, region4Data, region5Data];
+
+>>>>>>> Stashed changes:client/src/pages/Climate.js
   let region1 = {
     label: 'Region 1',
     data: [5,10,15,20,25,30,35,40,9,8,45,100],
