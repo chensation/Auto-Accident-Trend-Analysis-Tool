@@ -69,8 +69,8 @@ function cleanData(dirty) {
 
 async function main() {
 	const test_payload = {
-		"number": 3,
-		"vars": parser.constSet[3][0]
+		"number": 4,
+		"vars": parser.constSet[4][0]
 	}
 
 	init();
