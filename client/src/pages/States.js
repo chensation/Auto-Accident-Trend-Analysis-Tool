@@ -75,7 +75,9 @@ function States() {
   
   return (
     <div>
+      <h1>What are the differences in auto accidents between states?</h1>
       <Switch></Switch>
+      <p>Divide by Population</p>
       <Container>
       <svg viewBox="0 0 960 600">
         {statesData.map((stateData, index) =>
