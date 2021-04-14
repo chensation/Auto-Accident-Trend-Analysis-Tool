@@ -45,7 +45,6 @@ async function processQuery(number, vars = null) {
 	})
 
 	queries = convertQuery(defaultTable, number, contents, vars)
-	console.log(queries)
 	return contents
 }
 
@@ -69,7 +68,7 @@ function getSQLQuery(number) {
 
 function readContent(number, callback) {
 	const fs = require('fs')
-	const folder = `../../sqlScripts/query${number}`
+	const folder = `../sqlScripts/query${number}`
 
 	var files = []
 	fs.readdirSync(folder).forEach(file => {
