@@ -12,7 +12,7 @@ async function postData(url = '', data = {}) {
   const response = await fetch(url, {
     method: 'POST', 
     mode: 'cors',
-    cache: 'force-cache',
+    cache: 'default', // chan ge to force-cache
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ function App() {
 
   useEffect(()=>{
     callAPI()
-  });
+  }, []);
 
   return (
     <div className="App">
