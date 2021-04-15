@@ -2,17 +2,12 @@ const parser = require('./query-parser.js')
 const oracledb = require('oracledb');
 const dbConfig = require('./dbconfig.js');
 
-/*
-	Write function to convert the returned values to the desired format based on, columnwise split
-	Connect frontend with backend (try using no express, then try using express)
-*/
-
 function init() {
 	try {
 		oracledb.initOracleClient({libDir: './oracle/instantclient_19_10'});
 		console.log("Oracle initialized...")
 	} catch (err) {
-		console.log("Not initialized...")
+		console.log("Already initialized...")
 		// console.error(err);
 	}
 }
@@ -66,14 +61,9 @@ function cleanData(dirty) {
 	return clean
 }
 
-async function main() {
-	const test_payload = {
-		"number": 4,
-		"vars": parser.constSet[4][0]
-	}
-
+async function main(payload) {
 	init();
-	var data_meta = await run(test_payload)
+	var data_meta = await run(payload)
 	var data = cleanData(data_meta)
 
 	return data
