@@ -4,7 +4,7 @@ import Switch from '@material-ui/core/Switch';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import statesfile from '../components/states.json'
-import { test_payload, callAPI } from '../api-functions.js'
+import { defaultTable, constSet, callAPI } from '../api-functions.js'
 
 function States() {  
   const PrettoSlider = withStyles({
@@ -74,8 +74,8 @@ function States() {
   }
 
   useEffect(async () => {
-    var postData = await callAPI(test_payload)
-    console.log(postData)
+    // var postData = await callAPI(test_payload)
+    // console.log(postData)
   }, []);  
   
   return (

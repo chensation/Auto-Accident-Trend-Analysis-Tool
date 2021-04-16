@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { test_payload, callAPI } from '../api-functions.js'
+import { defaultTable, constSet, callAPI } from '../api-functions.js'
 import {Bar} from 'react-chartjs-2';
 
 function Covid() {
@@ -14,8 +14,8 @@ function Covid() {
   let distData = [56,10,65, 59,  20,30,-100, 81,40,50,-50,45];
 
   useEffect(async () => {
-    var postData = await callAPI(test_payload)
-    console.log(postData)
+    // var postData = await callAPI(test_payload)
+    // console.log(postData)
   }, []);  
 
   const [toggle,setToggle] = useState("Average Accident Duration Difference (Min)");

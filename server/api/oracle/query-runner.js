@@ -83,8 +83,8 @@ async function main(payload) {
 }
 
 const test_payload = {
-    "number": 1,
-    "vars": [["2015"]]
+    "number": 2,
+    "vars": [["25", "30"]]
 }
 
 main(test_payload)

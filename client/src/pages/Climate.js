@@ -3,57 +3,75 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
-import { test_payload, callAPI } from '../api-functions.js'
+import { defaultTable, constSet, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
+import { MuiThemeProvider } from '@material-ui/core';
 
 function Climate() {
   const regionLabels = ['Latitudes 25°N - 30°N', 'Latitudes 30°N - 35°N', 'Latitudes 35°N - 40°N', 'Latitudes 40°N - 45°N', 'Latitudes 45°N - 50°N'];
   const graphLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  let region1Data = [5,10,15,20,25,30,35,40,9,8,45,100];
-  let region2Data = [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3];
-  let region3Data = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
-  let region4Data = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
-  let region5Data = [1, 90, 39, 58, 28, 38, 128, 189, 38, 58, 28, 38];
+  const queryNumber = 2
+  const [regionsData, setRegionsData] = useState([])
 
-  useEffect(async () => {
-    var postData = await callAPI(test_payload)
-    console.log(postData)
+  useEffect(() => {
+    const fetchData = async function() {
+      let tempArray = []
+
+      for (var i = 0; i < constSet[queryNumber].length; i++) {
+        let payload = {
+          "number": queryNumber,
+          "vars": constSet[queryNumber][i]
+        }
+
+        let tempDict = await callAPI(payload)
+        tempArray[i] = tempDict["1"]["ACCIDENT_COUNT"]
+        console.log(tempArray[i])
+      }
+
+      setRegionsData(tempArray)
+      updateGraph(checkboxes, tempArray)
+
+      setData({
+        labels: graphLabels,
+        datasets: displayedRegions,
+      });
+    }
+
+    fetchData()
   }, []);  
-
-  let regionsData = [region1Data, region2Data, region3Data, region4Data, region5Data];
 
   let region1 = {
     label: regionLabels[0],
-    data: region1Data,
+    data: regionsData[0],
     fill: false,
     backgroundColor: 'rgb(255, 0, 0)',
     borderColor: 'rgba(255, 0, 0, 0.2)',
   };
   let region2 ={
     label: regionLabels[1],
-    data: region2Data,
+    data: regionsData[1],
     fill: false,
     backgroundColor: 'rgb(255, 127, 0)',
     borderColor: 'rgba(255, 127, 0, 0.2)',
   };
   let region3 = {
     label: regionLabels[2],
-    data: region3Data,
+    data: regionsData[2],
     fill: false,
     backgroundColor: 'rgb(255, 214, 0)',
     borderColor: 'rgba(212, 175, 0, 0.2)',
   };
   let region4 = {
     label: regionLabels[3],
-    data: region4Data,
+    data: regionsData[3],
     fill: false,
     backgroundColor: 'rgb(0, 255, 0)',
     borderColor: 'rgba(0, 255, 0, 0.2)',
   };
   let region5 = {
     label: regionLabels[4],
-    data: region5Data,
+    data: regionsData[4],
     fill: false,
     backgroundColor: 'rgb(0, 0, 255)',
     borderColor: 'rgba(0, 0, 255, 0.2)',
@@ -119,9 +137,9 @@ function Climate() {
     },
   ]);
 
-  function updateGraph(regions){
+  function updateGraph(regions, dataArray) {
     regions.forEach((region, index) => {
-      displayedRegions[index]['data'] = region['checked'] ? regionsData[index] : [];
+      displayedRegions[index]['data'] = region['checked'] ? dataArray[index] : [];
     });
   }
 
@@ -129,18 +147,17 @@ function Climate() {
     let temp = checkboxes;
     temp[parseInt(event.target.name)]['checked'] = event.target.checked;
     setCheckboxes(temp);
-    updateGraph(temp);
+    updateGraph(temp, regionsData);
     
     setData({
       labels: graphLabels,
       datasets: displayedRegions,
     });
-    
   }
   
   return (
     //check if useeffect has passed
-    regionsData.length ?
+    // regionsData.length ?
     // or regionsData[0].length depending on implementation
 
     <div>
@@ -162,7 +179,7 @@ function Climate() {
         
       </Grid>
     </div>
-    : <div></div>
+    // : <div></div>
   );
 }
 

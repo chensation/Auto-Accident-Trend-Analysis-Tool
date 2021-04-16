@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
-import { test_payload, callAPI } from '../api-functions.js'
+import { defaultTable, constSet, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
 
 function HoursSeasons() {
@@ -11,29 +11,64 @@ function HoursSeasons() {
   const seasonLabels = ['Winter', 'Spring', 'Summer', 'Fall'];
   const graphLabels = ['12am', '1am', '2am', '3am', '4am', '5am', '6am','7am', '8am', '9am', '10am', '11am', '12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
 
-  let winterData = [5,10,15,20,25,30,35,40,9,8,45,100,5,10,15,20,25,30,35,40,9,8,45,100];
-  let springData = [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3];
-  let summerData = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3,112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
-  let fallData = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
+  // let winterData = [5,10,15,20,25,30,35,40,9,8,45,100,5,10,15,20,25,30,35,40,9,8,45,100];
+  // let springData = [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3];
+  // let summerData = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3,112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
+  // let fallData = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
 
-  useEffect(async () => {
-    var postData = await callAPI(test_payload)
-    console.log(postData)
-  }, []);  
+  // let durationData = [winterData, springData, summerData, fallData];
+  // let distData = [winterData, springData, summerData, fallData];
+  
+  const queryNumber = 3
+  const [durationData, setDurationData] = useState([])
+  const [distData, setDistData] = useState([])
 
-  let durationData = [winterData, springData, summerData, fallData];
-  let distData = [winterData, springData, summerData, fallData];
+  useEffect(() => {
+    const fetchData = async function() {
+      let durArray = []
+      let distArray = []
+
+      for (var i = 0; i < constSet[queryNumber].length; i++) {
+        let payload = {
+          "number": queryNumber,
+          "vars": constSet[queryNumber][i]
+        }
+
+        let tempDict = await callAPI(payload)
+        console.log(tempDict["1"]["H"])
+        durArray[i] = tempDict["2"]["AVG_DURATION"]
+        distArray[i] = tempDict["1"]["AVG_DIS"]
+      }
+
+      setDurationData(durArray)
+      setDistData(distArray)
+
+      updateGraphs(checkboxes, durArray, distArray)
+
+      setDurationGraphData({
+        labels: graphLabels,
+        datasets: displayedSeasonsDuration,
+      });
+  
+      setDistGraphData({
+        labels: graphLabels,
+        datasets: displayedSeasonsDist,
+      });
+    }
+
+    fetchData()
+  }, []);   
 
   let winterDuration = {
     label: seasonLabels[0],
-    data: winterData,
+    data: durationData[0],
     fill: false,
     backgroundColor: 'rgb(255, 0, 0)',
     borderColor: 'rgba(255, 0, 0, 0.2)',
   };
   let winterDist = {
     label: seasonLabels[0],
-    data: winterData,
+    data: distData[0],
     fill: false,
     backgroundColor: 'rgb(255, 0, 0)',
     borderColor: 'rgba(255, 0, 0, 0.2)',
@@ -41,14 +76,14 @@ function HoursSeasons() {
 
   let springDuration ={
     label: seasonLabels[1],
-    data: springData,
+    data: durationData[1],
     fill: false,
     backgroundColor: 'rgb(255, 127, 0)',
     borderColor: 'rgba(255, 127, 0, 0.2)',
   };
   let springDist ={
     label: seasonLabels[1],
-    data: springData,
+    data: distData[1],
     fill: false,
     backgroundColor: 'rgb(255, 127, 0)',
     borderColor: 'rgba(255, 127, 0, 0.2)',
@@ -56,14 +91,14 @@ function HoursSeasons() {
 
   let summerDuration = {
     label: seasonLabels[2],
-    data: summerData,
+    data: durationData[2],
     fill: false,
     backgroundColor: 'rgb(255, 214, 0)',
     borderColor: 'rgba(212, 175, 0, 0.2)',
   };
   let summerDist = {
     label: seasonLabels[2],
-    data: summerData,
+    data: distData[2],
     fill: false,
     backgroundColor: 'rgb(255, 214, 0)',
     borderColor: 'rgba(212, 175, 0, 0.2)',
@@ -71,14 +106,14 @@ function HoursSeasons() {
 
   let fallDuration = {
     label: seasonLabels[3],
-    data: fallData,
+    data: durationData[3],
     fill: false,
     backgroundColor: 'rgb(0, 255, 0)',
     borderColor: 'rgba(0, 255, 0, 0.2)',
   };
   let fallDist = {
     label: seasonLabels[3],
-    data: fallData,
+    data: distData[3],
     fill: false,
     backgroundColor: 'rgb(0, 255, 0)',
     borderColor: 'rgba(0, 255, 0, 0.2)',
@@ -174,12 +209,10 @@ function HoursSeasons() {
     }
   ]);
 
- 
-
-  function updateGraphs(seasons){
+  function updateGraphs(seasons, durDataTemp, distDataTemp){
     seasons.forEach((season, index) => {
-      displayedSeasonsDuration[index]['data'] = season['checked'] ? durationData[index] : [];
-      displayedSeasonsDist[index]['data'] = season['checked'] ? distData[index] : [];
+      displayedSeasonsDuration[index]['data'] = season['checked'] ? durDataTemp[index] : [];
+      displayedSeasonsDist[index]['data'] = season['checked'] ? distDataTemp[index] : [];
     });
   }
 
@@ -187,7 +220,7 @@ function HoursSeasons() {
     let temp = checkboxes;
     temp[parseInt(event.target.name)]['checked'] = event.target.checked;
     setCheckboxes(temp);
-    updateGraphs(temp);
+    updateGraphs(temp, durationData, distData);
     
     setDurationGraphData({
       labels: graphLabels,
@@ -204,7 +237,7 @@ function HoursSeasons() {
   
   return (
     //check if useeffect has passed
-    durationData.length ?
+    // durationData.length ?
     // or durationData[0].length depending on implementation
 
     <Grid container direction='column' justify='center' alignItems="center">
@@ -232,7 +265,7 @@ function HoursSeasons() {
 
     </Grid>
             
-    : <div></div>
+    // : <div></div>
   );
 }
 

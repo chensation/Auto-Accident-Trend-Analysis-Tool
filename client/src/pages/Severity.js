@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
-import { test_payload, callAPI } from '../api-functions.js'
+import { defaultTable, constSet, callAPI } from '../api-functions.js'
 
 function Severity() {
   
@@ -34,8 +34,8 @@ function Severity() {
   }))(TableCell);
 
   useEffect(async () => {
-    var postData = await callAPI(test_payload)
-    console.log(postData)
+    // var postData = await callAPI(test_payload)
+    // console.log(postData)
   }, []);     
    
   return (
