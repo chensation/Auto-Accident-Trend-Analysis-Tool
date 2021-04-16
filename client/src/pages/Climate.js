@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import { test_payload, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
 
 function Climate() {
@@ -17,20 +18,8 @@ function Climate() {
   let region5Data = [1, 90, 39, 58, 28, 38, 128, 189, 38, 58, 28, 38];
 
   useEffect(() => {
-
-    const fetchData = async () => {
-
-      /*place function here
-      region1Data = function(region1) etc
-      or
-      regionsData[i] = function(i) etc
-
-      */
-    }
-
-    fetchData()
+    callAPI(test_payload)
   }, []);
-
 
   let regionsData = [region1Data, region2Data, region3Data, region4Data, region5Data];
 
