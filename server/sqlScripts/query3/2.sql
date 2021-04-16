@@ -2,7 +2,7 @@
 -- MONTH2: 01
 -- OPERATOR: AND
 
-SELECT  AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
+SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_DURATION,
         TO_CHAR(START_TIME, 'HH24') AS H FROM  
                 (   
                 SELECT *  FROM SIYUCHEN.ACCIDENT 

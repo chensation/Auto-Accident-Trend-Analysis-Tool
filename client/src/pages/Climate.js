@@ -7,7 +7,6 @@ import { test_payload, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
 
 function Climate() {
-
   const regionLabels = ['Latitudes 25°N - 30°N', 'Latitudes 30°N - 35°N', 'Latitudes 35°N - 40°N', 'Latitudes 40°N - 45°N', 'Latitudes 45°N - 50°N'];
   const graphLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -17,9 +16,10 @@ function Climate() {
   let region4Data = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
   let region5Data = [1, 90, 39, 58, 28, 38, 128, 189, 38, 58, 28, 38];
 
-  useEffect(() => {
-    callAPI(test_payload)
-  }, []);
+  useEffect(async () => {
+    var postData = await callAPI(test_payload)
+    console.log(postData)
+  }, []);  
 
   let regionsData = [region1Data, region2Data, region3Data, region4Data, region5Data];
 

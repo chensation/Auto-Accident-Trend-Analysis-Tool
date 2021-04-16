@@ -53,12 +53,25 @@ async function run(payload) {
 }
 
 function cleanData(dirty) {
-	clean = []
-	for (var dirt of dirty) {
-		clean.push(dirt["rows"])
+	var cleanedData = {}
+
+	for (var i = 1; i <= dirty.length; i++) {
+		var columnWise = dirty[i - 1]["rows"][0].map(function(col, k) {
+			return dirty[i - 1]["rows"].map(function(row) {
+				return row[k];
+			})
+		})
+
+		clean = {}
+		for (var j = 0; j < dirty[i - 1]["metaData"].length; j++) {
+			header = dirty[i - 1]["metaData"][j]["name"]
+			clean[header] = columnWise[j]
+		}		
+
+		cleanedData[i] = clean
 	}
 
-	return clean
+	return cleanedData
 }
 
 async function main(payload) {
@@ -68,6 +81,13 @@ async function main(payload) {
 
 	return data
 }
+
+const test_payload = {
+    "number": 1,
+    "vars": [["2015"]]
+}
+
+main(test_payload)
 
 module.exports = {
 	main: main

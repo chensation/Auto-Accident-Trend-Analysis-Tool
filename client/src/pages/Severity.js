@@ -33,9 +33,10 @@ function Severity() {
     },
   }))(TableCell);
 
-  useEffect(() => {
-    callAPI(test_payload)
-  }, []);    
+  useEffect(async () => {
+    var postData = await callAPI(test_payload)
+    console.log(postData)
+  }, []);     
    
   return (
     <div>

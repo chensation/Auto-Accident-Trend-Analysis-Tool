@@ -4,8 +4,10 @@ const test_payload = {
 }
 
 const callAPI = (data) => {
-  postData("http://localhost:9000/query", data)
-      .then(res => console.log(res.toString()));
+  return postData("http://localhost:9000/query", data)
+      .then(res => {
+        return res;
+      });
 }
 
 async function postData(url = '', data = {}) {

@@ -73,8 +73,9 @@ function States() {
     setStatesData(newArr);
   }
 
-  useEffect(() => {
-    callAPI(test_payload)
+  useEffect(async () => {
+    var postData = await callAPI(test_payload)
+    console.log(postData)
   }, []);  
   
   return (

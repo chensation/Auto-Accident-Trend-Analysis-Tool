@@ -46,7 +46,7 @@ SELECT  AVG(AFFECTED_DISTANCE) AS AVG_DIS,
 
 
 --DURATION
-SELECT  AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
+SELECT  AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_DURATION, 
         TO_CHAR(START_TIME, 'HH24') AS H FROM  
                 (   
                 SELECT *  FROM SIYUCHEN.ACCIDENT 
@@ -57,7 +57,7 @@ SELECT  AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE,
     ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
 
 
-SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
+SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_DURATION, 
         TO_CHAR(START_TIME, 'HH24') AS H FROM  
                 (   
                 SELECT *  FROM SIYUCHEN.ACCIDENT 
@@ -67,7 +67,7 @@ SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE,
     GROUP BY TO_CHAR(START_TIME, 'HH24')
     ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
     
-SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
+SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_DURATION, 
         TO_CHAR(START_TIME, 'HH24') AS H FROM  
                 (   
                 SELECT *  FROM SIYUCHEN.ACCIDENT 
@@ -78,7 +78,7 @@ SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE,
     ORDER BY TO_CHAR(START_TIME, 'HH24') ASC 
     
     
-SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_MINUTE, 
+SELECT AVG((sysdate + (end_time - start_time)*24*60- sysdate)) AS AVG_DURATION, 
         TO_CHAR(START_TIME, 'HH24') AS H FROM  
                 (   
                 SELECT *  FROM SIYUCHEN.ACCIDENT 

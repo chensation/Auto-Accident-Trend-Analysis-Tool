@@ -16,9 +16,10 @@ function HoursSeasons() {
   let summerData = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3,112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
   let fallData = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
 
-  useEffect(() => {
-    callAPI(test_payload)
-  }, []);
+  useEffect(async () => {
+    var postData = await callAPI(test_payload)
+    console.log(postData)
+  }, []);  
 
   let durationData = [winterData, springData, summerData, fallData];
   let distData = [winterData, springData, summerData, fallData];

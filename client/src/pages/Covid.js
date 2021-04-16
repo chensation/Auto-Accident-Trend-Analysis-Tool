@@ -13,9 +13,10 @@ function Covid() {
   let durationData = [65, 59, -100, 81, 56,10,20,30,40,50,-50,-60];
   let distData = [56,10,65, 59,  20,30,-100, 81,40,50,-50,45];
 
-  useEffect(() => {
-    callAPI(test_payload)
-  }, []);
+  useEffect(async () => {
+    var postData = await callAPI(test_payload)
+    console.log(postData)
+  }, []);  
 
   const [toggle,setToggle] = useState("Average Accident Duration Difference (Min)");
   
