@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
+import { test_payload, callAPI } from '../api-functions.js'
 
 function Severity() {
   
@@ -31,11 +32,14 @@ function Severity() {
       color: "white",
     },
   }))(TableCell);
+
+  useEffect(() => {
+    callAPI(test_payload)
+  }, []);    
    
-  
   return (
     <div>
-    <h1>What factors impact the severity of accidents, and by how much?</h1>
+    <h1>What Factors Impact the Severity of Accidents and by How Much?</h1>
     <TableContainer component={Paper}>
     <Table className="table" aria-label="simple table">
       <TableHead>

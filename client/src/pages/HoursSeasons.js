@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import { test_payload, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
 
 function HoursSeasons() {
@@ -15,28 +16,12 @@ function HoursSeasons() {
   let summerData = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3,112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
   let fallData = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
 
-  useEffect(()=>{
-
-    const fetchData = async ()=> {
-
-      /*place function here
-      winterDurationData = durationFunction(winter) etc
-      winterDistData = distFunction(winter) etc
-      or
-      durationData[i] = durationFunction(i) etc
-
-      */
-    }
-
-    fetchData()
-
+  useEffect(() => {
+    callAPI(test_payload)
   }, []);
-
 
   let durationData = [winterData, springData, summerData, fallData];
   let distData = [winterData, springData, summerData, fallData];
-
-  
 
   let winterDuration = {
     label: seasonLabels[0],

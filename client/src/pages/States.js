@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Switch from '@material-ui/core/Switch';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import statesfile from '../components/states.json'
+import { test_payload, callAPI } from '../api-functions.js'
 
 function States() {  
-  
   const PrettoSlider = withStyles({
     root: {
       color: '#52af77',
@@ -72,10 +72,14 @@ function States() {
     setYear(value);
     setStatesData(newArr);
   }
+
+  useEffect(() => {
+    callAPI(test_payload)
+  }, []);  
   
   return (
     <div>
-      <h1>What are the differences in auto accidents between states?</h1>
+      <h1>What Are the Differences in Auto Accidents Between States?</h1>
       <Switch></Switch>
       <p>Divide by Population</p>
       <Container>

@@ -1,11 +1,11 @@
 const test_payload = {
-    "number": 5,
-    "vars": null
+    "number": 1,
+    "vars": [["2015"]]
 }
 
 const callAPI = (data) => {
   postData("http://localhost:9000/query", data)
-      .then(res => console.log(res));
+      .then(res => console.log(res.toString()));
 }
 
 async function postData(url = '', data = {}) {
