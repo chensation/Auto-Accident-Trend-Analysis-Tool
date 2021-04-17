@@ -55,7 +55,7 @@ async function postData(url = '', data = {}) {
   const response = await fetch(url, {
     method: 'POST', 
     mode: 'cors',
-    cache: 'default', // change to force-cache when done testing
+    cache: 'force-cache', 
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
