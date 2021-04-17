@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,13 +8,19 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
-import { defaultTable, constSet, callAPI } from '../api-functions.js'
+import { constSet, callAPI } from '../api-functions.js'
 
 function Severity() {
-  
   function createData(num, factor, coefficient) {
     return { num, factor, coefficient };
   }
+
+  const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: "red",
+      color: "white",
+    },
+  }))(TableCell);  
   
   const rows = [
     createData(0, "precipitation", 159),
@@ -26,16 +32,35 @@ function Severity() {
     createData(6,"pressure", 120)
   ];
 
-  const StyledTableCell = withStyles((theme) => ({
-    head: {
-      backgroundColor: "red",
-      color: "white",
-    },
-  }))(TableCell);
+  const qn = 5
+  const[year, setYear] = useState(2016);
+  const [coeffData, setCoeffData] = useState([])
 
-  useEffect(async () => {
-    // var postData = await callAPI(test_payload)
-    // console.log(postData)
+  useEffect(() => {
+    // var flag = true
+
+    // const fetchData = async function() {
+    //   let coeffArray = []
+
+    //   if (flag) {
+    //     let tempDict = await callAPI(qn, JSON.stringify([
+    //       [year]
+    //     ]))
+    //     coeffArray = tempDict["1"]["CORRELATION_COEFFICIENT"]
+
+    //     console.log(coeffArray)
+    //   }
+
+    //   if (flag) {
+    //     setCoeffData(coeffArray)
+    //   }
+    // }
+
+    // fetchData()
+
+    // return function stopQuery() {
+    //   flag = false
+    // }
   }, []);     
    
   return (

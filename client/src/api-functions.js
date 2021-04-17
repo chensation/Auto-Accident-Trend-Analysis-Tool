@@ -44,24 +44,26 @@ const constSet = {
 	5: null
 }
 
-const callAPI = (data) => {
-  return postData("http://localhost:9000/query", data)
+const callAPI = (number, vars) => {
+  return getData("http://localhost:9000/query", number, vars)
       .then(res => {
         return res;
       });
 }
 
-async function postData(url = '', data = {}) {
-  const response = await fetch(url, {
-    method: 'POST', 
+async function getData(url = '', number, vars) {
+  var qurl = `${url}?number=${number}&vars=${vars}`
+  // console.log(qurl)
+
+  const response = await fetch(qurl, {
+    method: 'GET', 
     mode: 'cors',
-    cache: 'force-cache', 
+    cache: 'default', // force-cache 
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
     },
-    referrerPolicy: 'no-referrer', 
-    body: JSON.stringify(data)
+    referrerPolicy: 'no-referrer'
   });
 
   return response.json();

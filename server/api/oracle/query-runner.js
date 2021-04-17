@@ -7,7 +7,7 @@ function init() {
 		oracledb.initOracleClient({libDir: './oracle/instantclient_19_10'});
 		console.log("Oracle initialized...")
 	} catch (err) {
-		console.log("Already initialized...")
+		// console.log("Already initialized...")
 		// console.error(err);
 	}
 }
@@ -81,13 +81,6 @@ async function main(payload) {
 
 	return data
 }
-
-const test_payload = {
-    "number": 2,
-    "vars": [["25", "30"]]
-}
-
-main(test_payload)
 
 module.exports = {
 	main: main

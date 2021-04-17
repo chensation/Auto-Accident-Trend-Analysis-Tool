@@ -69,7 +69,7 @@ function getSQLQuery(number) {
 
 function readContent(number, callback) {
 	const fs = require('fs')
-	const folder = `./sqlScripts/query${number}`
+	const folder = `../sqlScripts/query${number}`
 
 	var files = []
 	fs.readdirSync(folder).forEach(file => {

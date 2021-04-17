@@ -3,23 +3,18 @@ import Grid from '@material-ui/core/Grid';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { defaultTable, constSet, callAPI } from '../api-functions.js'
+import { constSet, callAPI } from '../api-functions.js'
 import {Bar} from 'react-chartjs-2';
 
 function Covid() {
 
-  const graphLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const graphLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  let durationData = [65, 59, -100, 81, 56,10,20,30,40,50,-50,-60];
-  let distData = [56,10,65, 59,  20,30,-100, 81,40,50,-50,45];
-
-  useEffect(async () => {
-    // var postData = await callAPI(test_payload)
-    // console.log(postData)
-  }, []);  
-
+  const qn = 4
   const [toggle,setToggle] = useState("Average Accident Duration Difference (Min)");
-  
+  const [durationData, setDurationData] = useState([])
+  const [countData, setCountData] = useState([])
+
   let graphValues = [
     {
       label: toggle,
@@ -28,7 +23,50 @@ function Covid() {
       borderWidth: 2,
       data: durationData
     }
-  ];
+  ];  
+
+  const [state, setState] = useState({
+    labels: graphLabels,
+    datasets: graphValues
+  });    
+
+  useEffect(() => {
+    var flag = true
+
+    const fetchData = async function() {
+      let durDataDiff = []
+      let countDataDiff = []
+
+      for (var i = 0; i < constSet[qn].length; i++) {
+        if (flag) {
+          let tempDict = await callAPI(qn, JSON.stringify(constSet[qn][i]))
+          console.log(tempDict)
+          durDataDiff = tempDict["3"]["AVG_DURATION"].map((n, i) => n - tempDict["4"]["AVG_DURATION"][i])
+          countDataDiff = tempDict["1"]["ACCIDENT_COUNT"].map((n, i) => n - tempDict["2"]["ACCIDENT_COUNT"][i])
+        }
+      }
+
+      if (flag) {
+        setDurationData(durDataDiff)
+        setCountData(countDataDiff)
+
+        // if current is duration, do duration
+        // else, do count
+
+        graphValues[0].data = durDataDiff
+        setState({
+          labels: graphLabels,
+          datasets: graphValues
+        })        
+      }
+    }
+
+    fetchData()
+
+    return function stopQuery() {
+      flag = false
+    }    
+  }, []);  
 
   const options = {
     title:{
@@ -64,15 +102,10 @@ function Covid() {
       ],
     },
   }
-  
-  const [state, setState] = useState({
-    labels: graphLabels,
-    datasets: graphValues
-  });
 
   const switchData = (event) => {
-    if(event.target.value === "Average Accident Count Difference"){
-      graphValues[0].data = distData;
+    if (event.target.value === "Average Accident Count Difference"){
+      graphValues[0].data = countData;
       
     }
     else{
@@ -88,11 +121,9 @@ function Covid() {
 
   }
 
-  
-
   return (
     //check if useeffect has passed
-    durationData.length ?
+    // durationData.length ?
     
     <div>
       <h1>How Has COVID-19 Affected Auto Accidents?</h1>
@@ -109,7 +140,7 @@ function Covid() {
       </Grid>
     </div>
 
-    : <div></div>
+    // : <div></div>
   );
 }
 

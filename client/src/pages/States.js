@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Switch from '@material-ui/core/Switch';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
-import statesfile from '../components/states.json'
-import { defaultTable, constSet, callAPI } from '../api-functions.js'
+import statesFile from '../components/states.json'
+import { constSet, callAPI } from '../api-functions.js'
 
 function States() {  
   const PrettoSlider = withStyles({
@@ -37,7 +37,10 @@ function States() {
     },
   })(Slider);
 
-  const [statesData, setStatesData] = useState(statesfile);
+  const qn = 1
+  const [countData, setCountData] = useState([])
+  const [countPopData, setCountPopData] = useState([])
+  const [statesData, setStatesData] = useState(statesFile);
   const[year, setYear] = useState(2016);
   
   const handleTimeLineChange = (event, value) => {
@@ -73,9 +76,38 @@ function States() {
     setStatesData(newArr);
   }
 
-  useEffect(async () => {
-    // var postData = await callAPI(test_payload)
-    // console.log(postData)
+  useEffect(() => {
+    var flag = true
+
+    const fetchData = async function() {
+      let countArray = []
+      let countPopArray = []
+      let stateCodes = []
+
+      if (flag) {
+        let tempDict = await callAPI(qn, JSON.stringify([
+          [year]
+        ]))
+        countArray = tempDict["1"]["ACCIDENT_COUNT"]
+        countPopArray = tempDict["1"]["ACCIDENT_PER_THOUSAND_POP"]
+        stateCodes = tempDict["1"]["STATE_CODE"]
+
+        console.log(countArray)
+        console.log(countPopArray)
+        console.log(stateCodes)
+      }
+
+      if (flag) {
+        setCountData(countArray)
+        setCountPopData(countPopArray)
+      }
+    }
+
+    fetchData()
+
+    return function stopQuery() {
+      flag = false
+    }
   }, []);  
   
   return (

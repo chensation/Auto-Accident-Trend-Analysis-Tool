@@ -3,42 +3,48 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
-import { defaultTable, constSet, callAPI } from '../api-functions.js'
+import { constSet, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
-import { MuiThemeProvider } from '@material-ui/core';
+// import { MuiThemeProvider } from '@material-ui/core';
 
 function Climate() {
   const regionLabels = ['Latitudes 25°N - 30°N', 'Latitudes 30°N - 35°N', 'Latitudes 35°N - 40°N', 'Latitudes 40°N - 45°N', 'Latitudes 45°N - 50°N'];
   const graphLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  const queryNumber = 2
+  const qn = 2
   const [regionsData, setRegionsData] = useState([])
 
   useEffect(() => {
+    var flag = true
+
     const fetchData = async function() {
-      let tempArray = []
+      let countArray = []
 
-      for (var i = 0; i < constSet[queryNumber].length; i++) {
-        let payload = {
-          "number": queryNumber,
-          "vars": constSet[queryNumber][i]
+      for (var i = 0; i < constSet[qn].length; i++) {
+        if (flag) {
+          let tempDict = await callAPI(qn, JSON.stringify(constSet[qn][i]))
+          countArray[i] = tempDict["1"]["ACCIDENT_COUNT"]
+
+          // console.log(countArray[i])
         }
-
-        let tempDict = await callAPI(payload)
-        tempArray[i] = tempDict["1"]["ACCIDENT_COUNT"]
-        console.log(tempArray[i])
       }
 
-      setRegionsData(tempArray)
-      updateGraph(checkboxes, tempArray)
-
-      setData({
-        labels: graphLabels,
-        datasets: displayedRegions,
-      });
+      if (flag) {
+        setRegionsData(countArray)
+        updateGraph(checkboxes, countArray)
+  
+        setData({
+          labels: graphLabels,
+          datasets: displayedRegions,
+        });
+      }
     }
 
     fetchData()
+
+    return function stopQuery() {
+      flag = false
+    }
   }, []);  
 
   let region1 = {

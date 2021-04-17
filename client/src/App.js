@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import './App.css';
 import NavBar from './components/NavBar';
 import {defaults} from 'react-chartjs-2';

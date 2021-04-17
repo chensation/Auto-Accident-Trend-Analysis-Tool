@@ -3,60 +3,58 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
-import { defaultTable, constSet, callAPI } from '../api-functions.js'
+import { constSet, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
 
 function HoursSeasons() {
-
   const seasonLabels = ['Winter', 'Spring', 'Summer', 'Fall'];
   const graphLabels = ['12am', '1am', '2am', '3am', '4am', '5am', '6am','7am', '8am', '9am', '10am', '11am', '12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
-
-  // let winterData = [5,10,15,20,25,30,35,40,9,8,45,100,5,10,15,20,25,30,35,40,9,8,45,100];
-  // let springData = [12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 31, 2, 19, 3, 5, 2, 3];
-  // let summerData = [112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3,112, 191, 13, 51, 12, 31, 12, 19, 3, 5, 2, 3];
-  // let fallData = [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3];
-
-  // let durationData = [winterData, springData, summerData, fallData];
-  // let distData = [winterData, springData, summerData, fallData];
   
-  const queryNumber = 3
+  const qn = 3
   const [durationData, setDurationData] = useState([])
   const [distData, setDistData] = useState([])
 
   useEffect(() => {
+    var flag = true
+
     const fetchData = async function() {
       let durArray = []
       let distArray = []
 
-      for (var i = 0; i < constSet[queryNumber].length; i++) {
-        let payload = {
-          "number": queryNumber,
-          "vars": constSet[queryNumber][i]
-        }
+      for (var i = 0; i < constSet[qn].length; i++) {
+        if (flag) {
+          let tempDict = await callAPI(qn, JSON.stringify(constSet[qn][i]))
+          durArray[i] = tempDict["2"]["AVG_DURATION"]
+          distArray[i] = tempDict["1"]["AVG_DIS"]
 
-        let tempDict = await callAPI(payload)
-        console.log(tempDict["1"]["H"])
-        durArray[i] = tempDict["2"]["AVG_DURATION"]
-        distArray[i] = tempDict["1"]["AVG_DIS"]
+          // console.log(durArray[i])
+          // console.log(distArray[i])
+        }
       }
 
-      setDurationData(durArray)
-      setDistData(distArray)
-
-      updateGraphs(checkboxes, durArray, distArray)
-
-      setDurationGraphData({
-        labels: graphLabels,
-        datasets: displayedSeasonsDuration,
-      });
+      if (flag) {
+        setDurationData(durArray)
+        setDistData(distArray)
   
-      setDistGraphData({
-        labels: graphLabels,
-        datasets: displayedSeasonsDist,
-      });
+        updateGraphs(checkboxes, durArray, distArray)
+  
+        setDurationGraphData({
+          labels: graphLabels,
+          datasets: displayedSeasonsDuration,
+        });
+    
+        setDistGraphData({
+          labels: graphLabels,
+          datasets: displayedSeasonsDist,
+        });
+      }
     }
 
     fetchData()
+
+    return function stopQuery() {
+      flag = false
+    }    
   }, []);   
 
   let winterDuration = {
