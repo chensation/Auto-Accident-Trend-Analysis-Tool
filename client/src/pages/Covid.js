@@ -53,7 +53,12 @@ function Covid() {
         // if current is duration, do duration
         // else, do count
 
-        graphValues[0].data = durDataDiff
+        if (toggle === "Average Accident Duration Difference (Min)") {
+          graphValues[0].data = durDataDiff
+        } else if (toggle === "Average Accident Count Difference") {
+          graphValues[0].data = countDataDiff
+        }
+
         setState({
           labels: graphLabels,
           datasets: graphValues

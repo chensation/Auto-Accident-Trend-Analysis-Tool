@@ -38,6 +38,7 @@ function States() {
   })(Slider);
 
   const qn = 1
+  const [usePopulation, setUsePopulation] = useState(false)
   const [countData, setCountData] = useState([])
   const [countPopData, setCountPopData] = useState([])
   const [statesData, setStatesData] = useState(statesFile);
@@ -45,35 +46,70 @@ function States() {
   
   const handleTimeLineChange = (event, value) => {
     
-    let newArr = [...statesData];
+    // let newArr = [...statesData];
 
-    if(value===2016){
-    newArr.forEach(stateData=>{
-      stateData.color = "red";
-    })}
+  //   if(value===2016){
+  //   newArr.forEach(stateData=>{
+  //     stateData.color = "red";
+  //   })}
 
-    if(value===2017){
-      newArr.forEach(stateData=>{
-        stateData.color = "orange";
-    })}
+  //   if(value===2017){
+  //     newArr.forEach(stateData=>{
+  //       stateData.color = "orange";
+  //   })}
 
-    if(value===2018){
-        newArr.forEach(stateData=>{
-          stateData.color = "green";
-   })}
+  //   if(value===2018){
+  //       newArr.forEach(stateData=>{
+  //         stateData.color = "green";
+  //  })}
 
-    if(value===2019){
-        newArr.forEach(stateData=>{
-          stateData.color = "blue";
-    })}
+  //   if(value===2019){
+  //       newArr.forEach(stateData=>{
+  //         stateData.color = "blue";
+  //   })}
 
-    if(value===2020){
-      newArr.forEach(stateData=>{
-        stateData.color = "blueviolet";
-    })}
+  //   if(value===2020){
+  //     newArr.forEach(stateData=>{
+  //       stateData.color = "blueviolet";
+  //   })}
     
     setYear(value);
-    setStatesData(newArr);
+    // setStatesData(newArr);
+  }
+
+  const percentColors = [
+    { pct: 0.0, color: { r: 0x00, g: 0xff, b: 0 } },
+    { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
+    { pct: 1.0, color: { r: 0xff, g: 0x00, b: 0 } } ];
+
+  var getColorForPercentage = function(pct) {
+      for (var i = 1; i < percentColors.length - 1; i++) {
+          if (pct < percentColors[i].pct) {
+              break;
+          }
+      }
+
+      var lower = percentColors[i - 1];
+      var upper = percentColors[i];
+      var range = upper.pct - lower.pct;
+      var rangePct = (pct - lower.pct) / range;
+      var pctLower = 1 - rangePct;
+      var pctUpper = rangePct;
+      var color = {
+          r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+          g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+          b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+      };
+      return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
+  };  
+
+  const percentile = (arr, val) => {
+    return (100 *
+      arr.reduce(
+        (acc, v) => acc + (v < val ? 1 : 0) + (v === val ? 0.5 : 0),
+        0
+      )) /
+    arr.length
   }
 
   useEffect(() => {
@@ -88,13 +124,38 @@ function States() {
         let tempDict = await callAPI(qn, JSON.stringify([
           [year]
         ]))
+
         countArray = tempDict["1"]["ACCIDENT_COUNT"]
         countPopArray = tempDict["1"]["ACCIDENT_PER_THOUSAND_POP"]
         stateCodes = tempDict["1"]["STATE_CODE"]
 
-        console.log(countArray)
-        console.log(countPopArray)
-        console.log(stateCodes)
+        var tempData = [...statesData]
+
+        for (var i = 0; i < tempData.length; i++) {
+          let code = tempData[i].id
+          let index = stateCodes.indexOf(code)
+
+          if (index != -1) {
+            if (usePopulation) {
+              var perc = percentile(countPopArray, countPopArray[index]) / 100.0
+            } else {
+              var perc = percentile(countArray, countArray[index]) / 100.0
+            }
+
+            tempData[i].color = getColorForPercentage(perc)
+            tempData[i].count = countArray[index]
+            tempData[i].countPop = countPopArray[index]
+
+            // console.log(`${perc}---${tempData[i].color}--${tempData[i].id}`)
+            // note: hawaii and alaska don't have any accidents in the data            
+          }
+        }
+
+        setStatesData(tempData)
+
+        // console.log(countArray)
+        // console.log(countPopArray)
+        // console.log(stateCodes)
       }
 
       if (flag) {
@@ -108,23 +169,30 @@ function States() {
     return function stopQuery() {
       flag = false
     }
-  }, []);  
-  
+  }, [year, usePopulation]);
+
+  const handleSwitchChange = () => {
+    setUsePopulation(!usePopulation)
+  }
+
   return (
     <div>
       <h1>What Are the Differences in Auto Accidents Between States?</h1>
-      <Switch></Switch>
+      <Switch onChange={handleSwitchChange}></Switch>
       <p>Divide by Population</p>
       <Container>
       <svg viewBox="0 0 960 600">
         {statesData.map((stateData, index) =>
-          <path 
+          <path className="tooltip"
             style={{cursor: "pointer", fill:stateData.color}}
             key={index}
             stroke="#fff"
             strokeWidth="6px"
             d={stateData.shape}
           >
+          <title>
+            {usePopulation ? "Accident Count Per Thousand People: " + stateData.countPop : "Accident Count: " + stateData.count }
+          </title>
           </path>
         )}
       </svg>

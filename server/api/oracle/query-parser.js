@@ -45,7 +45,7 @@ async function processQuery(number, vars = null) {
 	})
 
 	queries = convertQuery(defaultTable, number, contents, vars)
-	// console.log(queries)
+	console.log(queries)
 	return contents
 }
 
