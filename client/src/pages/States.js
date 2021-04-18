@@ -3,6 +3,7 @@ import Container from '@material-ui/core/Container';
 import Switch from '@material-ui/core/Switch';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import statesFile from '../components/states.json'
 import { constSet, callAPI } from '../api-functions.js'
 
@@ -39,13 +40,13 @@ function States() {
 
   const qn = 1
   const [usePopulation, setUsePopulation] = useState(false)
-  const [countData, setCountData] = useState([])
-  const [countPopData, setCountPopData] = useState([])
   const [statesData, setStatesData] = useState(statesFile);
   const[year, setYear] = useState(2016);
+  const [isLoading, setLoading] = useState(true);
   
   const handleTimeLineChange = (event, value) => {
     setYear(value);
+    setLoading(true);
   }
 
   const percentColors = [
@@ -53,20 +54,20 @@ function States() {
     { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
     { pct: 1.0, color: { r: 0xff, g: 0x00, b: 0 } } ];
 
-  var getColorForPercentage = function(pct) {
+  let getColorForPercentage = (pct) => {
       for (var i = 1; i < percentColors.length - 1; i++) {
           if (pct < percentColors[i].pct) {
               break;
           }
       }
 
-      var lower = percentColors[i - 1];
-      var upper = percentColors[i];
-      var range = upper.pct - lower.pct;
-      var rangePct = (pct - lower.pct) / range;
-      var pctLower = 1 - rangePct;
-      var pctUpper = rangePct;
-      var color = {
+      let lower = percentColors[i - 1];
+      let upper = percentColors[i];
+      let range = upper.pct - lower.pct;
+      let rangePct = (pct - lower.pct) / range;
+      let pctLower = 1 - rangePct;
+      let pctUpper = rangePct;
+      let color = {
           r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
           g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
           b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
@@ -84,7 +85,7 @@ function States() {
   }
 
   useEffect(() => {
-    var flag = true
+    let flag = true
 
     const fetchData = async function() {
       let countArray = []
@@ -100,17 +101,17 @@ function States() {
         countPopArray = tempDict["1"]["ACCIDENT_PER_THOUSAND_POP"]
         stateCodes = tempDict["1"]["STATE_CODE"]
 
-        var tempData = [...statesData]
+        let tempData = [...statesData]
 
-        for (var i = 0; i < tempData.length; i++) {
+        for (let i = 0; i < tempData.length; i++) {
           let code = tempData[i].id
           let index = stateCodes.indexOf(code)
-
+          let perc;
           if (index != -1) {
             if (usePopulation) {
-              var perc = percentile(countPopArray, countPopArray[index]) / 100.0
+               perc = percentile(countPopArray, countPopArray[index]) / 100.0
             } else {
-              var perc = percentile(countArray, countArray[index]) / 100.0
+              perc = percentile(countArray, countArray[index]) / 100.0
             }
 
             tempData[i].color = getColorForPercentage(perc)
@@ -123,34 +124,34 @@ function States() {
         }
 
         setStatesData(tempData)
-
+        setLoading(false);
         // console.log(countArray)
         // console.log(countPopArray)
         // console.log(stateCodes)
       }
-
-      if (flag) {
-        setCountData(countArray)
-        setCountPopData(countPopArray)
-      }
+        
     }
 
     fetchData()
 
-    return function stopQuery() {
+    return () => {
       flag = false
     }
   }, [year, usePopulation]);
 
   const handleSwitchChange = () => {
     setUsePopulation(!usePopulation)
+    setLoading(true);
   }
 
   return (
     <div>
       <h1>What Are the Differences in Auto Accidents Between States?</h1>
-      <Switch onChange={handleSwitchChange}></Switch>
-      <p>Divide by Population</p>
+      {isLoading ? <CircularProgress /> : null}
+      <div>
+        <Switch onChange={handleSwitchChange}></Switch>
+        <p>Divide by Population</p>
+      </div>
       <Container>
       <svg viewBox="0 0 960 600">
         {statesData.map((stateData, index) =>

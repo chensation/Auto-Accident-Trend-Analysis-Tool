@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { constSet, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
 
@@ -47,6 +48,8 @@ function HoursSeasons() {
           labels: graphLabels,
           datasets: displayedSeasonsDist,
         });
+
+        setLoading(false);
       }
     }
 
@@ -207,6 +210,8 @@ function HoursSeasons() {
     }
   ]);
 
+  const [isLoading, setLoading] = useState(true);
+
   function updateGraphs(seasons, durDataTemp, distDataTemp){
     seasons.forEach((season, index) => {
       displayedSeasonsDuration[index]['data'] = season['checked'] ? durDataTemp[index] : [];
@@ -234,14 +239,12 @@ function HoursSeasons() {
   
   
   return (
-    //check if useeffect has passed
-    // durationData.length ?
-    // or durationData[0].length depending on implementation
 
     <Grid container direction='column' justify='center' alignItems="center">
 
       <Grid item xs={12}>
         <h1>How Does Time of Day Affect Auto Accident Delay In Different Seasons?</h1>
+        {isLoading ? <CircularProgress /> : null}
       </Grid>
 
       <Grid item xs={12}>

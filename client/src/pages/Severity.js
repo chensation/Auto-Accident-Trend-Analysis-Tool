@@ -6,13 +6,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Slider from '@material-ui/core/Slider';
-import { constSet, callAPI } from '../api-functions.js'
+import { callAPI } from '../api-functions.js'
 
 function Severity() {
 
-  const coefficients = ["Precipitation", "Humidity", "Wind_Speed", "Wind_Chill", "Temperature", "Visibility", "Pressure"];
+  
 
   const PrettoSlider = withStyles({
     root: {
@@ -45,38 +45,36 @@ function Severity() {
     },
   })(Slider);
 
-  function createData(num, factor, coefficient) {
-    return { num, factor, coefficient };
-  }
-
   const StyledTableCell = withStyles((theme) => ({
     head: {
-      backgroundColor: "red",
+      backgroundColor: "#424242",
       color: "white",
     },
   }))(TableCell);  
+
+  const coefficients = ["Precipitation", "Humidity", "Wind_Speed", "Wind_Chill", "Temperature", "Visibility", "Pressure", "Severity"];
   
   const rows = [
-    createData(0, "precipitation", 159),
-    createData(1, "humidity", 23),
-    createData(2, "wind speed", 1259),
-    createData(3, "wind chill", 234),
-    createData(4, "temperature", 119),
-    createData(5, "visibility", 123),
-    createData(6,"pressure", 120)
+    {name: "Precipitation", value: 0},
+    {name: "Humidity", value: 0},
+    {name: "Wind Speed", value: 0},
+    {name: "Wind Chill", value: 0},
+    {name: "Temperature", value: 0},
+    {name: "Visibility", value: 0},
+    {name: "Pressure", value: 0},
+    {name: "Severity", value: 0}
   ];
 
   const qn = 5
   const[year, setYear] = useState(2016);
-  const [coeffData, setCoeffData] = useState([])
+  const [coeffData, setCoeffData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
 
-    setCoeffData(rows);
-    var flag = true
+    let flag = true
 
     const fetchData = async function() {
-      let coeffArray = []
 
       if (flag) {
         for(let i = 0; i < coefficients.length; i++){
@@ -84,14 +82,14 @@ function Severity() {
             [coefficients[i], year]
           ]));
         
-          coeffArray = tempDict["1"]["CORRELATION_COEFFICIENT"];
-          console.log(tempDict);
+          let r_value = tempDict["1"]["CORRELATION_COEFFICIENT"][0];
+          rows[i].value = r_value;
+          console.log(r_value);
         }
+        console.log(rows);
+        setCoeffData(rows);
+        setLoading(false);
        
-      }
-
-      if (flag) {
-        setCoeffData(coeffArray)
       }
     }
 
@@ -100,15 +98,17 @@ function Severity() {
     return function stopQuery() {
       flag = false
     }
-  }, []);     
+  }, [year]);     
    
   const handleTimeLineChange = (event, value) => {
     setYear(value);
+    setLoading(true);
   }
 
   return (
     <div>
       <h1>What Factors Impact the Severity of Accidents and by How Much?</h1>
+      {isLoading ? <CircularProgress /> : null}
         <TableContainer>
           <Table className="table" aria-label="simple table">
             <TableHead>
@@ -118,10 +118,10 @@ function Severity() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {coeffData.map((row) =>(
-                <TableRow key={row.num}>
-                  <TableCell align="center" >{row.factor}</TableCell>
-                  <TableCell align="center" >{row.coefficient}</TableCell>
+              {coeffData.sort((a, b) => Math.abs(b.value) - Math.abs(a.value)).map((row) =>(
+                <TableRow style={ row.value > 0 ? {"background" : "#8bc34a"}: {"background" : "#ff5722"} } key={row.value}>
+                  <TableCell style={{"border-right-style": "solid"}}align="center" >{row.name}</TableCell>
+                  <TableCell align="center" >{row.value}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -136,7 +136,6 @@ function Severity() {
         defaultValue ={2016}
         onChange={handleTimeLineChange}
       />
-      
     </div>
   );
 }

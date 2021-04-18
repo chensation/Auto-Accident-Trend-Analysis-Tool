@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { constSet, callAPI } from '../api-functions.js'
 import { Line } from 'react-chartjs-2';
 // import { MuiThemeProvider } from '@material-ui/core';
@@ -13,6 +14,7 @@ function Climate() {
 
   const qn = 2
   const [regionsData, setRegionsData] = useState([])
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     var flag = true
@@ -37,6 +39,7 @@ function Climate() {
           labels: graphLabels,
           datasets: displayedRegions,
         });
+        setLoading(false);
       }
     }
 
@@ -169,7 +172,7 @@ function Climate() {
     <div>
 
       <h1>What Are the Effects of Climate on Auto Accidents?</h1>
-    
+      {isLoading ? <CircularProgress /> : null}
       <Grid container direction='row' justify='center' alignItems="center">
         <Grid item>
           <FormGroup>

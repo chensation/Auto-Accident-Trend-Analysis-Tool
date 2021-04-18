@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { constSet, callAPI } from '../api-functions.js'
 import {Bar} from 'react-chartjs-2';
 
@@ -29,6 +30,8 @@ function Covid() {
     labels: graphLabels,
     datasets: graphValues
   });    
+
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     var flag = true
@@ -62,7 +65,9 @@ function Covid() {
         setState({
           labels: graphLabels,
           datasets: graphValues
-        })        
+        });
+        
+        setLoading(false);
       }
     }
 
@@ -132,6 +137,7 @@ function Covid() {
     
     <div>
       <h1>How Has COVID-19 Affected Auto Accidents?</h1>
+      {isLoading ? <CircularProgress /> : null}
       <Grid container direction='row' justify='center' alignItems="center">
         <Grid item>
           <RadioGroup value={toggle} onChange={switchData}>
