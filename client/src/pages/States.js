@@ -50,9 +50,12 @@ function States() {
   }
 
   const percentColors = [
-    { pct: 0.0, color: { r: 0x00, g: 0xff, b: 0 } },
-    { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
-    { pct: 1.0, color: { r: 0xff, g: 0x00, b: 0 } } ];
+    { pct: 0.0, color: { r: 242, g: 231, b: 80 } },
+    { pct: 0.018, color: { r: 242, g: 184, b: 7 } },
+    { pct: 0.05, color: { r: 242, g: 135, b: 5 } },
+    { pct: 0.14, color: { r: 197, g: 33, b: 4 } },
+    { pct: 0.36, color: { r: 113, g: 3, b: 1 } },
+    { pct: 1.0, color: { r: 100, g: 3, b: 1 } } ];
 
   let getColorForPercentage = (pct) => {
       for (var i = 1; i < percentColors.length - 1; i++) {
@@ -109,9 +112,14 @@ function States() {
           let perc;
           if (index != -1) {
             if (usePopulation) {
-               perc = percentile(countPopArray, countPopArray[index]) / 100.0
+               //perc = percentile(countPopArray, countPopArray[index]) / 100.0
+               let max = countPopArray.reduce((a, b) => Math.max(a, b));
+               perc = countPopArray[index] / max;
             } else {
-              perc = percentile(countArray, countArray[index]) / 100.0
+              //perc = percentile(countArray, countArray[index]) / 100.0
+              let max = countArray.reduce((a, b) => Math.max(a, b));
+              perc = countArray[index] / max;
+              console.log(perc);
             }
 
             tempData[i].color = getColorForPercentage(perc)
@@ -153,6 +161,7 @@ function States() {
         <p>Divide by Population</p>
       </div>
       <Container>
+        <h2>{usePopulation ? "Accident Count per Thousand People" : "Accident Count"}</h2>
       <svg viewBox="0 0 960 600">
         {statesData.map((stateData, index) =>
           <path className="tooltip"
@@ -163,7 +172,7 @@ function States() {
             d={stateData.shape}
           >
           <title>
-            {usePopulation ? "Accident Count Per Thousand People: " + stateData.countPop : "Accident Count: " + stateData.count }
+            {stateData.id + (usePopulation ? " Accident Count Per Thousand People: " + stateData.countPop : " Accident Count: " + stateData.count) }
           </title>
           </path>
         )}

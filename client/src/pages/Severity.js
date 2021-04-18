@@ -84,9 +84,7 @@ function Severity() {
         
           let r_value = tempDict["1"]["CORRELATION_COEFFICIENT"][0];
           rows[i].value = r_value;
-          console.log(r_value);
         }
-        console.log(rows);
         setCoeffData(rows);
         setLoading(false);
        
@@ -120,7 +118,7 @@ function Severity() {
             <TableBody>
               {coeffData.sort((a, b) => Math.abs(b.value) - Math.abs(a.value)).map((row) =>(
                 <TableRow style={ row.value > 0 ? {"background" : "#8bc34a"}: {"background" : "#ff5722"} } key={row.value}>
-                  <TableCell style={{"border-right-style": "solid"}}align="center" >{row.name}</TableCell>
+                  <TableCell style={{borderRightStyle: "solid"}}align="center" >{row.name}</TableCell>
                   <TableCell align="center" >{row.value}</TableCell>
                 </TableRow>
               ))}
