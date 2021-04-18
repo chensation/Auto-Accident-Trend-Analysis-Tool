@@ -15,7 +15,9 @@ const defaultTable = {
 		["00-00"],
 		["00-00"]
 	],
-	5: null
+	5: [
+		["DEFAULT", "0000"]
+	]
 }
 
 const constSet = {
@@ -91,7 +93,9 @@ function convertQuery(defaultTable, number, queries, vars) {
 	const table = defaultTable[number]
 
 	if (vars) {
+
 		if (queries.length != vars.length) {
+
 			console.error("Number of queries doesn't match variables. :(")
 			return null
 		}

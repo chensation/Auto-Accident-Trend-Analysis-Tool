@@ -45,36 +45,7 @@ function States() {
   const[year, setYear] = useState(2016);
   
   const handleTimeLineChange = (event, value) => {
-    
-    // let newArr = [...statesData];
-
-  //   if(value===2016){
-  //   newArr.forEach(stateData=>{
-  //     stateData.color = "red";
-  //   })}
-
-  //   if(value===2017){
-  //     newArr.forEach(stateData=>{
-  //       stateData.color = "orange";
-  //   })}
-
-  //   if(value===2018){
-  //       newArr.forEach(stateData=>{
-  //         stateData.color = "green";
-  //  })}
-
-  //   if(value===2019){
-  //       newArr.forEach(stateData=>{
-  //         stateData.color = "blue";
-  //   })}
-
-  //   if(value===2020){
-  //     newArr.forEach(stateData=>{
-  //       stateData.color = "blueviolet";
-  //   })}
-    
     setYear(value);
-    // setStatesData(newArr);
   }
 
   const percentColors = [
