@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Switch from '@material-ui/core/Switch';
 import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core'
 import Slider from '@material-ui/core/Slider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import statesFile from '../components/states.json'
@@ -39,9 +40,12 @@ function States() {
   })(Slider);
 
   const qn = 1
+  const qn2 = 6
   const [usePopulation, setUsePopulation] = useState(false)
   const [statesData, setStatesData] = useState(statesFile);
   const[year, setYear] = useState(2016);
+  const[tupleCount, setTupleCount] = useState();
+  const[showTupleCount, setShowTupleCount] = useState(false);
   const [isLoading, setLoading] = useState(true);
   
   const handleTimeLineChange = (event, value) => {
@@ -100,6 +104,10 @@ function States() {
           [year]
         ]))
 
+        let tupleDict = await callAPI(qn2, JSON.stringify([]))
+        let tupleC = tupleDict["1"]["TUPLE"][0]
+        setTupleCount(tupleC)
+
         countArray = tempDict["1"]["ACCIDENT_COUNT"]
         countPopArray = tempDict["1"]["ACCIDENT_PER_THOUSAND_POP"]
         stateCodes = tempDict["1"]["STATE_CODE"]
@@ -137,7 +145,6 @@ function States() {
         // console.log(countPopArray)
         // console.log(stateCodes)
       }
-        
     }
 
     fetchData()
@@ -154,9 +161,15 @@ function States() {
 
   return (
     <div>
+      <Button onClick={() => {setShowTupleCount(!showTupleCount)}} variant="contained" color ="primary">
+        Show Number of Tuples
+      </Button>
+      <div>
+        {showTupleCount ? tupleCount : ""}
+      </div>     
       <h1>What Are the Differences in Auto Accidents Between States?</h1>
       {isLoading ? <CircularProgress /> : null}
-      <div>
+      <div>     
         <Switch onChange={handleSwitchChange}></Switch>
         <p>Divide by Population</p>
       </div>

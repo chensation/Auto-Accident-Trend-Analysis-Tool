@@ -17,7 +17,8 @@ const defaultTable = {
 	],
 	5: [
 		["DEFAULT", "0000"]
-	]
+	],
+	6: null
 }
 
 const constSet = {
@@ -47,13 +48,13 @@ async function processQuery(number, vars = null) {
 	})
 
 	queries = convertQuery(defaultTable, number, contents, vars)
-	//console.log(queries)
+	console.log(queries)
 	return contents
 }
 
 function getSQLQuery(number) {
 	return new Promise((resolve, reject) => {
-		if (number < 1 || number > 5) {
+		if (number < 1 || number > 6) {
 			console.error("Not a valid SQL query. :(")
 		} else {
 			var contents = []
