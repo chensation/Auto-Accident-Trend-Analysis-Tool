@@ -161,7 +161,7 @@ function States() {
 
   return (
     <div>
-      <Button onClick={() => {setShowTupleCount(!showTupleCount)}} variant="contained" color ="primary">
+      <Button onClick={() => {setShowTupleCount(!showTupleCount)}} variant="contained">
         Show Number of Tuples
       </Button>
       <div>
