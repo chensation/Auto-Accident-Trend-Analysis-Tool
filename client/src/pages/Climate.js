@@ -54,36 +54,36 @@ function Climate() {
     label: regionLabels[0],
     data: regionsData[0],
     fill: false,
-    backgroundColor: 'rgb(255, 0, 0)',
-    borderColor: 'rgba(255, 0, 0, 0.2)',
+    backgroundColor: 'rgb(121, 230, 242)',
+    borderColor: 'rgba(121, 230, 242, 1)',
   };
   let region2 ={
     label: regionLabels[1],
     data: regionsData[1],
     fill: false,
-    backgroundColor: 'rgb(255, 127, 0)',
-    borderColor: 'rgba(255, 127, 0, 0.2)',
+    backgroundColor: 'rgb(4, 196, 217)',
+    borderColor: 'rgba(4, 196, 217, 1)',
   };
   let region3 = {
     label: regionLabels[2],
     data: regionsData[2],
     fill: false,
-    backgroundColor: 'rgb(255, 214, 0)',
-    borderColor: 'rgba(212, 175, 0, 0.2)',
+    backgroundColor: 'rgb(56, 171, 215)',
+    borderColor: 'rgba(56, 171, 215, 1)',
   };
   let region4 = {
     label: regionLabels[3],
     data: regionsData[3],
     fill: false,
-    backgroundColor: 'rgb(0, 255, 0)',
-    borderColor: 'rgba(0, 255, 0, 0.2)',
+    backgroundColor: 'rgb(40, 114, 155)',
+    borderColor: 'rgba(40, 114, 155, 1)',
   };
   let region5 = {
     label: regionLabels[4],
     data: regionsData[4],
     fill: false,
-    backgroundColor: 'rgb(0, 0, 255)',
-    borderColor: 'rgba(0, 0, 255, 0.2)',
+    backgroundColor: 'rgb(11, 38, 49)',
+    borderColor: 'rgba(11, 38, 49, 1)',
   };
 
   let displayedRegions = [region1,region2,region3,region4,region5];
@@ -97,7 +97,7 @@ function Climate() {
 
     title: {
       display: true,
-      text: 'Accident Count By Climate Regions'
+      text: 'Accident Severity By Climate Regions'
     },
 
     legend: {
@@ -117,12 +117,12 @@ function Climate() {
         {
           scaleLabel:{
             display:true,
-            labelString: 'Accident Count'
+            labelString: 'Accident Severity(1-4)'
           },
+          min: 2,
+          max: 3,
 
-          ticks: {
-            beginAtZero: true,
-          },
+          
         },
       ],
     },

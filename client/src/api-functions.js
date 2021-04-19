@@ -58,7 +58,7 @@ async function getData(url = '', number, vars) {
   const response = await fetch(qurl, {
     method: 'GET', 
     mode: 'cors',
-    cache: 'default', // default 
+    cache: 'force-cache', // default 
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
