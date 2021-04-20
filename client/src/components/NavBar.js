@@ -84,7 +84,7 @@ export default function NavTabs() {
           <LinkTab label="Climate" href="/Climate" {...a11yProps(1)} />
           <LinkTab label="Hours/Seasons" href="/Hours-Seasons" {...a11yProps(2)} />
           <LinkTab label="COVID-19" href="/Covid" {...a11yProps(3)} />
-          <LinkTab label="Severity" href="/Severity" {...a11yProps(4)} />
+          <LinkTab label="Weather" href="/Severity" {...a11yProps(4)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>

@@ -105,7 +105,7 @@ function Severity() {
 
   return (
     <div>
-      <h1>What Factors Impact the Severity of Accidents and by How Much?</h1>
+      <h1>What Weather Factors Impact the Severity of Accidents and by How Much?</h1>
       {isLoading ? <CircularProgress /> : null}
         <TableContainer>
           <Table className="table" aria-label="simple table">

@@ -171,7 +171,7 @@ function Climate() {
 
     <div>
 
-      <h1>What Are the Effects of Climate on Auto Accidents?</h1>
+      <h1>What Are the Effects of Climate on Accident Severity?</h1>
       {isLoading ? <CircularProgress /> : null}
       <Grid container direction='row' justify='center' alignItems="center">
         <Grid item>
