@@ -79,15 +79,15 @@ function HoursSeasons() {
     label: seasonLabels[1],
     data: durationData[1],
     fill: false,
-    backgroundColor: 'rgb(255, 127, 0)',
-    borderColor: 'rgba(255, 127, 0, 0.2)',
+    backgroundColor: 'rgb(0, 255, 0)',
+    borderColor: 'rgba(0, 255, 0, 0.2)',
   };
   let springDist ={
     label: seasonLabels[1],
     data: distData[1],
     fill: false,
-    backgroundColor: 'rgb(255, 127, 0)',
-    borderColor: 'rgba(255, 127, 0, 0.2)',
+    backgroundColor: 'rgb(0, 255, 0)',
+    borderColor: 'rgba(0, 255, 0, 0.2)',
   };
 
   let summerDuration = {
@@ -109,15 +109,15 @@ function HoursSeasons() {
     label: seasonLabels[3],
     data: durationData[3],
     fill: false,
-    backgroundColor: 'rgb(0, 255, 0)',
-    borderColor: 'rgba(0, 255, 0, 0.2)',
+    backgroundColor: 'rgb(255, 127, 0)',
+    borderColor: 'rgba(255, 127, 0, 0.2)',
   };
   let fallDist = {
     label: seasonLabels[3],
     data: distData[3],
     fill: false,
-    backgroundColor: 'rgb(0, 255, 0)',
-    borderColor: 'rgba(0, 255, 0, 0.2)',
+    backgroundColor: 'rgb(255, 127, 0)',
+    borderColor: 'rgba(255, 127, 0, 0.2)',
   };
   
   let displayedSeasonsDuration =[winterDuration,springDuration,summerDuration,fallDuration];
